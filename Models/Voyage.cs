@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bo_Voyage_Final.Models
 {
@@ -13,7 +14,11 @@ namespace Bo_Voyage_Final.Models
 
         public int Id { get; set; }
         public int IdDestination { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime DateDepart { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime DateRetour { get; set; }
         public int PlacesDispo { get; set; }
         public decimal PrixHt { get; set; }
