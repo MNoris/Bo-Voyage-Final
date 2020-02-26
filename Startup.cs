@@ -30,7 +30,7 @@ namespace Bo_Voyage_Final
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("BoVoyageConnection"))); 
+                    Configuration.GetConnectionString("BoVoyageConnection")));
             services.AddDbContext<BoVoyageContext>(options =>
                  options.UseSqlServer(
                      Configuration.GetConnectionString("BoVoyageConnection")));
@@ -83,6 +83,10 @@ namespace Bo_Voyage_Final
 
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapControllerRoute(
+                //    name: "areaRoute",
+                //    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
