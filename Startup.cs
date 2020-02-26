@@ -12,6 +12,7 @@ using Bo_Voyage_Final.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Bo_Voyage_Final.Models;
 
 namespace Bo_Voyage_Final
 {
@@ -29,7 +30,10 @@ namespace Bo_Voyage_Final
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("BoVoyageConnection"))); 
+            services.AddDbContext<BoVoyageContext>(options =>
+                 options.UseSqlServer(
+                     Configuration.GetConnectionString("BoVoyageConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
