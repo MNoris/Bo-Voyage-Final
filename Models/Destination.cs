@@ -13,7 +13,7 @@ namespace Bo_Voyage_Final.Models
         }
 
         public int Id { get; set; }
-        public int IdParente { get; set; }
+        public int? IdParente { get; set; }
         public string Nom { get; set; }
         public byte Niveau { get; set; }
         public string Description { get; set; }

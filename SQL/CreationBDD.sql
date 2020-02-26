@@ -16,7 +16,7 @@ Go
 
 CREATE TABLE Destination 
     ( Id INTEGER NOT NULL IDENTITY , 
-     IdParente INTEGER NOT NULL , 
+     IdParente INTEGER, 
      Nom NVARCHAR (100) NOT NULL , 
      Niveau TINYINT NOT NULL , 
      Description NVARCHAR (500) 

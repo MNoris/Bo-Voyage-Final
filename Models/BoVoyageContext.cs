@@ -61,7 +61,6 @@ namespace Bo_Voyage_Final.Models
                 entity.HasOne(d => d.IdParenteNavigation)
                     .WithMany(p => p.InverseIdParenteNavigation)
                     .HasForeignKey(d => d.IdParente)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Destination_Destination_Fk");
             });
 
