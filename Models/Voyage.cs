@@ -13,13 +13,15 @@ namespace Bo_Voyage_Final.Models
             Voyageur = new HashSet<Voyageur>();
         }
 
+        [Display(Name = "Id voyage")]
         public int Id { get; set; }
+        [Display(Name = "Destination")]
         public int IdDestination { get; set; }
 
-        [DataType(DataType.Date)]
+        [Display(Name ="Date de départ"), DataType(DataType.Date)]
         public DateTime DateDepart { get; set; }
 
-        [DataType(DataType.Date)]
+        [Display(Name = "Date de Retour"), DataType(DataType.Date)]
         public DateTime DateRetour { get; set; }
 
         [Display(Name="Places disponibles")]
@@ -27,6 +29,7 @@ namespace Bo_Voyage_Final.Models
         [Display(Name = "Prix hors-taxe par pers.")]
         [DataType(DataType.Currency)]
         public decimal PrixHt { get; set; }
+        [Display(Name = "Réduction")]
         public decimal Reduction { get; set; }
         public string Descriptif { get; set; }
 

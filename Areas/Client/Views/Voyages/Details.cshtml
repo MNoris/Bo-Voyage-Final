@@ -10,50 +10,48 @@
     <h4>Voyage</h4>
     <hr />
     <dl class="row">
-        <div>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.DateDepart)
-            </dt>
-            <dd class="col-sm-3">
-                @Html.DisplayFor(model => model.DateDepart)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.DateRetour)
-            </dt>
-            <dd class="col-sm-3">
-                @Html.DisplayFor(model => model.DateRetour)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.PlacesDispo)
-            </dt>
-            <dd class="col-sm-3">
-                @Html.DisplayFor(model => model.PlacesDispo)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.PrixHt)
-            </dt>
-            <dd class="col-sm-3">
-                @Html.DisplayFor(model => model.PrixHt)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Reduction)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Reduction)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Descriptif)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Descriptif)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.IdDestinationNavigation)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.IdDestinationNavigation.Nom)
-            </dd>
-        </div>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.DateDepart)
+        </dt>
+        <dd class="col-sm-3">
+            @Html.DisplayFor(model => model.DateDepart)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.DateRetour)
+        </dt>
+        <dd class="col-sm-3">
+            @Html.DisplayFor(model => model.DateRetour)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.PlacesDispo)
+        </dt>
+        <dd class="col-sm-3">
+            @Html.DisplayFor(model => model.PlacesDispo)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.PrixHt)
+        </dt>
+        <dd class="col-sm-3">
+            @Html.DisplayFor(model => model.PrixHt)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Reduction)
+        </dt>
+        <dd class="col-sm-3">
+            @Html.DisplayFor(model => model.Reduction)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Descriptif)
+        </dt>
+        <dd class="col-sm-3">
+            @Html.DisplayFor(model => model.Descriptif)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.IdDestinationNavigation)
+        </dt>
+        <dd class="col-sm-3">
+            @Html.DisplayFor(model => model.IdDestinationNavigation.Nom)
+        </dd>
     </dl>
 </div>
 <div class="row">
@@ -85,8 +83,8 @@
         </a>
     </div>
 </div>
-
+<br />
 <div>
     <button class="btn btn-primary" asp-action="Reserver" asp-route-id="@Model.Id">Réserver</button> |
-    <button class="btn btn-danger" asp-action="Index">Back to List</button>
+    <button class="btn btn-danger" asp-action="Index">Retour</button>
 </div>

@@ -30,11 +30,11 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             ViewBag.MaxPrice = maxPrice;
 
             //Passer un string format yyyy-MM-dd comme valeur par défaut pour l'input type date
-            if (dateMin ==DateTime.MinValue)
+            if (dateMin == DateTime.MinValue)
             {
                 ViewBag.dateMin = DateTime.Now.ToString("yyyy-MM-dd");
             }
-         else   ViewBag.dateMin = dateMin.ToString("yyyy-MM-dd");
+            else ViewBag.dateMin = dateMin.ToString("yyyy-MM-dd");
 
             if (dateMax == DateTime.MinValue)
             {
@@ -42,23 +42,23 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             }
             else ViewBag.dateMax = dateMax.ToString("yyyy-MM-dd");
 
-         
+
 
             //Requete de récupération des voyages et destination
-            IQueryable<Voyage> reqVoyages =  _context.Voyage.Include(v => v.IdDestinationNavigation).ThenInclude(e => e.Photo)
-                .OrderBy(e=>e.IdDestinationNavigation.Nom);
+            IQueryable<Voyage> reqVoyages = _context.Voyage.Include(v => v.IdDestinationNavigation).ThenInclude(e => e.Photo)
+                .OrderBy(e => e.IdDestinationNavigation.Nom);
 
-            if (IdDestination !=0)
+            if (IdDestination != 0)
             {
-            //Application du filtre Sur les destinations
-            reqVoyages = reqVoyages.Where(d => d.IdDestination == IdDestination);                
+                //Application du filtre Sur les destinations
+                reqVoyages = reqVoyages.Where(d => d.IdDestination == IdDestination);
             }
 
             //filtres par prix
-            if (minPrice !=0 || maxPrice !=0)
+            if (minPrice != 0 || maxPrice != 0)
             {
 
-            reqVoyages = reqVoyages.Where(p => p.PrixHt <= maxPrice && p.PrixHt >= minPrice);
+                reqVoyages = reqVoyages.Where(p => p.PrixHt <= maxPrice && p.PrixHt >= minPrice);
             }
 
             //filtres par date de départ
@@ -70,7 +70,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
 
             var listeVoyages = await reqVoyages.AsNoTracking().ToListAsync();
-           
+
             return View(listeVoyages);
         }
 
@@ -91,113 +91,6 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             }
 
             return View(voyage);
-        }
-
-        // GET: Client/Voyages/Create
-        public IActionResult Create()
-        {
-            ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom");
-            return View();
-        }
-
-        // POST: Client/Voyages/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdDestination,DateDepart,DateRetour,PlacesDispo,PrixHt,Reduction,Descriptif")] Voyage voyage)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(voyage);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom", voyage.IdDestination);
-            return View(voyage);
-        }
-
-        // GET: Client/Voyages/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var voyage = await _context.Voyage.FindAsync(id);
-            if (voyage == null)
-            {
-                return NotFound();
-            }
-            ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom", voyage.IdDestination);
-            return View(voyage);
-        }
-
-        // POST: Client/Voyages/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdDestination,DateDepart,DateRetour,PlacesDispo,PrixHt,Reduction,Descriptif")] Voyage voyage)
-        {
-            if (id != voyage.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(voyage);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VoyageExists(voyage.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom", voyage.IdDestination);
-            return View(voyage);
-        }
-
-        // GET: Client/Voyages/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var voyage = await _context.Voyage
-                .Include(v => v.IdDestinationNavigation)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (voyage == null)
-            {
-                return NotFound();
-            }
-
-            return View(voyage);
-        }
-
-        // POST: Client/Voyages/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var voyage = await _context.Voyage.FindAsync(id);
-            _context.Voyage.Remove(voyage);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool VoyageExists(int id)
