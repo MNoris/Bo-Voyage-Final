@@ -30,7 +30,8 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             ViewBag.MaxPrice = maxPrice;
 
             //Passer un string format yyyy-MM-dd comme valeur par défaut pour l'input type date
-            if (dateMin == DateTime.MinValue)
+            //valeur par defaut minimal : date du jour, max : 7jours plus tard
+            if (dateMin ==DateTime.MinValue)
             {
                 ViewBag.dateMin = DateTime.Now.ToString("yyyy-MM-dd");
             }
