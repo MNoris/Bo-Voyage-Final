@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace Bo_Voyage_Final.Models
 {
     public partial class Voyage
