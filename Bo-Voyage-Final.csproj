@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Identity\Data\**" />
+    <Content Remove="Areas\Identity\Data\**" />
+    <EmbeddedResource Remove="Areas\Identity\Data\**" />
+    <None Remove="Areas\Identity\Data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\Images\birmanie_1.jpg" />
     <None Include="wwwroot\Images\birmanie_2.jpg" />
     <None Include="wwwroot\Images\birmanie_3.jpg" />
@@ -38,12 +45,9 @@
 
 
   <ItemGroup>
-    <Folder Include="Areas\BackOffice\Data\" />
-    <Folder Include="Areas\BackOffice\Models\" />
     <Folder Include="Areas\Client\Controllers\" />
     <Folder Include="Areas\Client\Data\" />
     <Folder Include="Areas\Client\Models\" />
-    <Folder Include="Areas\Identity\Data\" />
   </ItemGroup>
 
 

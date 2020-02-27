@@ -1,7 +1,31 @@
 ﻿
+@model Bo_Voyage_Final.Models.VoyagesDossiersResa
+
+
+
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Tableau de bord</h1>
 
+
+<h2>Liste des dossiers de réservation en cours</h2>
+
+
+
+
+
+
+
+
+<h2>Liste des voyages disponibles dont le départ est dans moins de 15 jours</h2>
+
+
+<span class="row">
+    @foreach (var item in Model.listeVoyageImminent)
+    {
+
+        <partial name="_cardVoyageVuePartielle" model="@item" />
+    }
+</span>
