@@ -1,17 +1,55 @@
-﻿@{
-    ViewBag.Title = "BoVoyage";
-    ViewBag.Bg = "/Images/voyage1.jpg";
+﻿@model Dictionary<int,List<Bo_Voyage_Final.Models.Voyage>>
+
+
+    @{
+        ViewBag.Title = "BoVoyage";
+        ViewBag.Bg = "/Images/voyage1.jpg";
+    }
+
+@{ 
+    List<string> Libelle = new List<string>()
+    {
+              "Top 5 Voyages le moins chèrs" ,
+              "Top 5 Voyages de départ iminent",
+              "Top 5 Voyages pour les pays les plus visités"
+    };
 }
+    <div class="text-center container container-fluid" style="max-width=100%;background-image: url(@ViewBag.Bg);
+                                heigth:100%;
+                                background-position: center;
+                                background-repeat: no-repeat;
+                                background-size: cover">
 
-<div class="text-center" style="background-image: url(@ViewBag.Bg);heigth:1000px">
-    @*height: 100%;
+        <h1 class="display-4 font-italic font-weight-bold text-white">@ViewBag.Title</h1>
 
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover"*@
-     
-    <h1 class="display-4">@ViewBag.Title</h1>
-    @*<img src="@(ViewData["image"])" alt="TestImage"/>*@
 
-    
-</div>
+        <div class="container row">
+            @foreach (var item in Model)
+            {
+                <div class="col-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Libelle[item.Key]
+                                    @*@Html.DisplayFor(model => item.Key)*@
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var voyage in item.Value)
+                            {
+                                <tr>
+                                    <td>
+                                       <partial name="_cardVoyageVuePartielle" model="@voyage"/>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+
+
+    </div>
