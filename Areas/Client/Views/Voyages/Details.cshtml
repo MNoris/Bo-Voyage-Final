@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    ViewBag.User = User.Identity.Name;
 }
 
 <h1>Details</h1>
@@ -85,6 +86,6 @@
 </div>
 <br />
 <div>
-    <button class="btn btn-primary" asp-action="Reserver" asp-route-id="@Model.Id">Réserver</button> |
-    <button class="btn btn-danger" asp-action="Index">Retour</button>
+    <a class="btn btn-primary" asp-action="Reserver" asp-route-id="@Model.Id">Réserver</a> |
+    <a class="btn btn-danger" asp-action="Index">Retour</a>
 </div>
