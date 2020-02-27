@@ -18,7 +18,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly BoVoyageContext _context;
 
-        public HomeController(ILogger<HomeController> logger,BoVoyageContext context)
+        public HomeController(ILogger<HomeController> logger, BoVoyageContext context)
         {
             _logger = logger;
             _context = context;
@@ -34,13 +34,13 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             var top5Voyages = new Dictionary<int, List<Voyage>>();
 
             List<Voyage> list5MoinsCher = _context.Voyage.Include(v => v.IdDestinationNavigation)
-                                                         .ThenInclude(d => d.Photo)  
+                                                         .ThenInclude(d => d.Photo)
                                                          .OrderBy(v => v.PrixHt * (1 - v.Reduction)).Take(5).ToList();
-            top5Voyages.Add(0,list5MoinsCher);
+            top5Voyages.Add(0, list5MoinsCher);
             List<Voyage> list5DepartIminent = _context.Voyage.Include(v => v.IdDestinationNavigation)
                                                     .ThenInclude(d => d.Photo)
                                                     .OrderBy(v => v.DateDepart).Take(5).ToList();
-            top5Voyages.Add(1,list5DepartIminent);
+            top5Voyages.Add(1, list5DepartIminent);
 
 
             List<Voyage> list5VoyagePays = new List<Voyage>();
@@ -57,7 +57,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                 cnx.Open();
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    while (reader.Read() && list5VoyagePays.Count <6)
+                    while (reader.Read() && list5VoyagePays.Count < 6)
                     {
                         int idDest = (int)reader["Id"];
                         var voyages = _context.Voyage.Include(v => v.IdDestinationNavigation)
@@ -68,16 +68,21 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                 }
 
             }
-            top5Voyages.Add(2,list5VoyagePays);
+            top5Voyages.Add(2, list5VoyagePays);
 
             return View(top5Voyages);
         }
 
 
-        public IActionResult Contact()
+        public IActionResult Contact(ContactInfos contactInfos)
         {
+            ViewBag.sendingEmail = false;
+            if (ModelState.IsValid)
+            {
+                ViewBag.sendingEmail = true;
+            }
             return View();
-        }
+            }
 
         public IActionResult Privacy()
         {
