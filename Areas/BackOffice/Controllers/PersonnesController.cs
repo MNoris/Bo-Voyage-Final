@@ -20,14 +20,19 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         }
 
         // GET: BackOffice/Personnes
-        public async Task<IActionResult> Index(string search)
+        public async Task<IActionResult> Index(string search, int idClient)
         {
-
+            //stockage des valeurs des filtres
             ViewBag.Search = search;
-
+            ViewBag.IdClient = idClient;
 
             IQueryable<Personne> reqClients = _context.Personne.Where(p => p.TypePers == 1);
 
+            //filtrage par id
+            if (idClient !=0)
+            {
+                reqClients = reqClients.Where(i=>i.Id==idClient);
+            }
 
 
             //fitrage par morceau de nom
@@ -36,7 +41,14 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
                 reqClients = reqClients.Where(e => e.Nom.Contains(search));
             }
 
+            //fitrage par sexe
 
+
+            //filtrage par  age
+
+
+
+            //creation de la liste
             List<Personne> listeClients =await reqClients.AsNoTracking().ToListAsync();
 
             return View(listeClients);
