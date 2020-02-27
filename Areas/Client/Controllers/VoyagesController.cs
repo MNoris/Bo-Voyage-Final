@@ -20,10 +20,43 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
         }
 
         // GET: Client/Voyages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int IdDestination, decimal minPrice, decimal maxPrice, DateTime dateMin, DateTime dateMax)
         {
-            var boVoyageContext = _context.Voyage.Include(v => v.IdDestinationNavigation);
-            return View(await boVoyageContext.ToListAsync());
+            //Rq pour import des destinations dans la liste déroulante
+            ViewBag.Destinations = _context.Destination.AsNoTracking().ToList();
+            //Memo des valeurs des filtres en cours
+            ViewData["idDestination"] = IdDestination;
+            ViewBag.MinPrice = minPrice;
+            ViewBag.MaxPrice = maxPrice;
+
+            //Requete de récupération des voyages et destination
+            IQueryable<Voyage> reqVoyages =  _context.Voyage.Include(v => v.IdDestinationNavigation).ThenInclude(e => e.Photo)
+                .OrderBy(e=>e.IdDestinationNavigation.Nom);
+
+            if (IdDestination !=0)
+            {
+            //Application du filtre Sur les destinations
+            reqVoyages = reqVoyages.Where(d => d.IdDestination == IdDestination);                
+            }
+
+            //filtres par prix
+            if (minPrice !=0 || maxPrice !=0)
+            {
+
+            reqVoyages = reqVoyages.Where(p => p.PrixHt <= maxPrice && p.PrixHt >= minPrice);
+            }
+
+            //filtres par date de départ
+            if (dateMin.ToString("yyyy-MM-dd") != "05/03/2020" || dateMax.ToString("yyyy-MM-dd") != "05/03/2020")
+            {
+                reqVoyages = reqVoyages.Where(d => d.DateDepart >= dateMin && d.DateDepart >= dateMax);
+            }
+
+
+
+            var listeVoyages = await reqVoyages.AsNoTracking().ToListAsync();
+           
+            return View(listeVoyages);
         }
 
         // GET: Client/Voyages/Details/5

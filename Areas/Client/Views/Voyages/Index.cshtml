@@ -6,6 +6,69 @@
 
 <h1>Liste des voyages</h1>
 
+<form asp-controller="Voyages" asp-action="Index" method="get">
+
+    <p>
+        <label>Destination</label>
+        <select name="idDestination"
+                asp-items="@(new SelectList( ViewBag.Destinations,"Id","Nom",ViewData["IdDestination"]))">
+            <option selected value="0">Toutes les destinations</option>
+        </select>
+
+        <label>Prix Minimal</label>
+        <input type="number" name="minPrice" value="@ViewBag.MinPrice" step="50">
+        <label>Prix Maximal</label>
+        <input type="number" name="maxPrice" value="@ViewBag.MaxPrice" step="50">
+
+        <label>Date minimale de départ</label>
+       <input name="dateMin" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder=" 05/03/2020">
+        <label>Date maximale de départ</label>
+        <input name="dateMax" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder=" 05/03/2020">
+        
+
+        <input type="submit" value="Filtrer" />
+
+    </p>
+</form>
+
+
+<span class="row">
+    @foreach (var item in Model)
+    {<span class="col-4">
+            <div class="card">
+                <img class="card-img-top" src="@item.IdDestinationNavigation.Photo.First().NomFichier" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.IdDestinationNavigation.Nom)</h5>
+                    <p class="card-text text-center">
+                        <div>
+                            @Html.DisplayNameFor(model => model.DateDepart) :
+                            @Html.DisplayFor(modelItem => item.DateDepart)
+                        </div>
+                        <div>
+                            @Html.DisplayNameFor(model => model.DateRetour) :
+                            @Html.DisplayFor(modelItem => item.DateRetour)
+                        </div>
+                        <div>
+                            @Html.DisplayNameFor(model => model.PlacesDispo) :
+                            @Html.DisplayFor(modelItem => item.PlacesDispo)
+                        </div>
+                        <div>
+                            @Html.DisplayNameFor(model => model.PrixHt) :
+                            @Html.DisplayFor(modelItem => item.PrixHt)
+                        </div>
+
+                    </p>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Plus de details</a>
+                </div>
+            </div>
+        </span>
+    }
+</span>
+
+
+
+
+
 
 <table class="table">
     <thead>

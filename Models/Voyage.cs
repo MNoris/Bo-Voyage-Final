@@ -21,7 +21,11 @@ namespace Bo_Voyage_Final.Models
 
         [DataType(DataType.Date)]
         public DateTime DateRetour { get; set; }
+
+        [Display(Name="Places disponibles")]
         public int PlacesDispo { get; set; }
+        [Display(Name = "Prix hors-taxe par pers.")]
+        [DataType(DataType.Currency)]
         public decimal PrixHt { get; set; }
         public decimal Reduction { get; set; }
         public string Descriptif { get; set; }

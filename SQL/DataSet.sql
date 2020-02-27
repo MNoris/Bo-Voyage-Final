@@ -18,16 +18,16 @@ values ('Guadeloupe', 3, 'Dans un site exceptionnel,en bordure d''un petit lagon
 go
 
 insert into Photo(NomFichier , IdDestination)
-values ('~/Images/birmanie_1.jpg', 3),
-('~/Images/birmanie_2.jpg', 3),
-('~/Images/birmanie_3.jpg', 3),
-('~/Images/bretagne_1.jpg', 5),
-('~/Images/canada_1.jpg', 4),
-('~/Images/canada_2.jpg', 4),
-('~/Images/guadeloupe_1.jpg', 1),
-('~/Images/guadeloupe_2.jpg', 1),
-('~/Images/saint-barth_1.jpg', 2),
-('~/Images/saint-barth_2.jpg', 2)
+values ('/Images/birmanie_1.jpg', 3),
+('/Images/birmanie_2.jpg', 3),
+('/Images/birmanie_3.jpg', 3),
+('/Images/bretagne_1.jpg', 5),
+('/Images/canada_1.jpg', 4),
+('/Images/canada_2.jpg', 4),
+('/Images/guadeloupe_1.jpg', 1),
+('/Images/guadeloupe_2.jpg', 1),
+('/Images/saint-barth_1.jpg', 2),
+('/Images/saint-barth_2.jpg', 2)
 
 go
 
