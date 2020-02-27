@@ -32,7 +32,7 @@ namespace Bo_Voyage_Final.Models
         [Display(Name = "Réduction")]
         public decimal Reduction { get; set; }
         public string Descriptif { get; set; }
-
+        [Display(Name="Destination")]
         public virtual Destination IdDestinationNavigation { get; set; }
         public virtual ICollection<Dossierresa> Dossierresa { get; set; }
         public virtual ICollection<Voyageur> Voyageur { get; set; }

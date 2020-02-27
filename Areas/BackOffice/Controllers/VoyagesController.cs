@@ -20,10 +20,46 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         }
 
         // GET: Identity/Voyages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int IdDestination, decimal minPrice, decimal maxPrice, DateTime dateMin, DateTime dateMax)
         {
-            var boVoyageContext = _context.Voyage.Include(v => v.IdDestinationNavigation);
-            return View(await boVoyageContext.ToListAsync());
+            //Rq pour import des destinations dans la liste déroulante
+            ViewBag.Destinations = _context.Destination.AsNoTracking().ToList();
+            //Memo des valeurs des filtres en cours
+            ViewData["idDestination"] = IdDestination;
+            ViewBag.MinPrice = minPrice;
+            ViewBag.MaxPrice = maxPrice;
+
+            //Passer un string format yyyy-MM-dd comme valeur par défaut pour l'input type date
+            //valeur par defaut minimal : date du jour, max : 7jours plus tard
+            if (dateMin == DateTime.MinValue)
+                ViewBag.dateMin = DateTime.Now.ToString("yyyy-MM-dd");
+            else ViewBag.dateMin = dateMin.ToString("yyyy-MM-dd");
+
+            if (dateMax == DateTime.MinValue)
+                ViewBag.dateMax = DateTime.Now.AddDays(7).ToString("yyyy-MM-dd");
+            else ViewBag.dateMax = dateMax.ToString("yyyy-MM-dd");
+
+
+
+            //Requete de récupération des voyages et destination
+            IQueryable<Voyage> reqVoyages = _context.Voyage.Where(v => v.PlacesDispo > 0).Include(v => v.IdDestinationNavigation).ThenInclude(e => e.Photo)
+                .OrderBy(e => e.IdDestinationNavigation.Nom);
+
+            if (IdDestination != 0)
+                //Application du filtre Sur les destinations
+                reqVoyages = reqVoyages.Where(d => d.IdDestination == IdDestination);
+
+            //filtres par prix
+            if (minPrice != 0 || maxPrice != 0)
+                reqVoyages = reqVoyages.Where(p => p.PrixHt <= maxPrice && p.PrixHt >= minPrice);
+
+            //filtres par date de départ
+            if (dateMin != DateTime.MinValue || dateMax != DateTime.MinValue)
+                reqVoyages = reqVoyages.Where(d => d.DateDepart >= dateMin && d.DateDepart <= dateMax);
+
+            var listeVoyages = await reqVoyages.AsNoTracking().ToListAsync();
+
+            return View(listeVoyages);
         }
 
         // GET: Identity/Voyages/Details/5
