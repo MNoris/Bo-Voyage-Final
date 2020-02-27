@@ -10,23 +10,22 @@ using Bo_Voyage_Final.Models;
 namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
 {
     [Area("BackOffice")]
-    public class ClientsController : Controller
+    public class PersonnesController : Controller
     {
         private readonly BoVoyageContext _context;
 
-        public ClientsController(BoVoyageContext context)
+        public PersonnesController(BoVoyageContext context)
         {
             _context = context;
         }
 
-        // GET: BackOffice/Clients
+        // GET: BackOffice/Personnes
         public async Task<IActionResult> Index()
         {
-            var boVoyageContext = _context.Client.Include(c => c.IdNavigation);
-            return View(await boVoyageContext.ToListAsync());
+            return View(await _context.Personne.ToListAsync());
         }
 
-        // GET: BackOffice/Clients/Details/5
+        // GET: BackOffice/Personnes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
                 return NotFound();
             }
 
-            var client = await _context.Client
-                .Include(c => c.IdNavigation)
+            var personne = await _context.Personne
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (client == null)
+            if (personne == null)
             {
                 return NotFound();
             }
 
-            return View(client);
+            return View(personne);
         }
 
-        // GET: BackOffice/Clients/Create
+        // GET: BackOffice/Personnes/Create
         public IActionResult Create()
         {
-            ViewData["Id"] = new SelectList(_context.Personne, "Id", "Civilite");
             return View();
         }
 
-        // POST: BackOffice/Clients/Create
+        // POST: BackOffice/Personnes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Models.Client client)
+        public async Task<IActionResult> Create([Bind("Id,TypePers,Civilite,Nom,Prenom,Email,Telephone,Datenaissance")] Personne personne)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(client);
+                _context.Add(personne);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id"] = new SelectList(_context.Personne, "Id", "Civilite", client.Id);
-            return View(client);
+            return View(personne);
         }
 
-        // GET: BackOffice/Clients/Edit/5
+        // GET: BackOffice/Personnes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
                 return NotFound();
             }
 
-            var client = await _context.Client.FindAsync(id);
-            if (client == null)
+            var personne = await _context.Personne.FindAsync(id);
+            if (personne == null)
             {
                 return NotFound();
             }
-            ViewData["Id"] = new SelectList(_context.Personne, "Id", "Civilite", client.Id);
-            return View(client);
+            return View(personne);
         }
 
-        // POST: BackOffice/Clients/Edit/5
+        // POST: BackOffice/Personnes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Models.Client client)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TypePers,Civilite,Nom,Prenom,Email,Telephone,Datenaissance")] Personne personne)
         {
-            if (id != client.Id)
+            if (id != personne.Id)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
             {
                 try
                 {
-                    _context.Update(client);
+                    _context.Update(personne);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClientExists(client.Id))
+                    if (!PersonneExists(personne.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id"] = new SelectList(_context.Personne, "Id", "Civilite", client.Id);
-            return View(client);
+            return View(personne);
         }
 
-        // GET: BackOffice/Clients/Delete/5
+        // GET: BackOffice/Personnes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +124,30 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
                 return NotFound();
             }
 
-            var client = await _context.Client
-                .Include(c => c.IdNavigation)
+            var personne = await _context.Personne
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (client == null)
+            if (personne == null)
             {
                 return NotFound();
             }
 
-            return View(client);
+            return View(personne);
         }
 
-        // POST: BackOffice/Clients/Delete/5
+        // POST: BackOffice/Personnes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var client = await _context.Client.FindAsync(id);
-            _context.Client.Remove(client);
+            var personne = await _context.Personne.FindAsync(id);
+            _context.Personne.Remove(personne);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClientExists(int id)
+        private bool PersonneExists(int id)
         {
-            return _context.Client.Any(e => e.Id == id);
+            return _context.Personne.Any(e => e.Id == id);
         }
     }
 }
