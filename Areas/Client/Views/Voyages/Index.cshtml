@@ -21,9 +21,10 @@
         <input type="number" name="maxPrice" value="@ViewBag.MaxPrice" step="50">
 
         <label>Date minimale de départ</label>
-       <input name="dateMin" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder=" 05/03/2020">
+       <input type="date" name="dateMin" value="@ViewBag.dateMin" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" >
+
         <label>Date maximale de départ</label>
-        <input name="dateMax" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder=" 05/03/2020">
+        <input type="date" name="dateMax" value="@ViewBag.dateMax" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" >
         
 
         <input type="submit" value="Filtrer" />

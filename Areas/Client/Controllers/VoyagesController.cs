@@ -29,6 +29,21 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             ViewBag.MinPrice = minPrice;
             ViewBag.MaxPrice = maxPrice;
 
+            //Passer un string format yyyy-MM-dd comme valeur par défaut pour l'input type date
+            if (dateMin ==DateTime.MinValue)
+            {
+                ViewBag.dateMin = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+         else   ViewBag.dateMin = dateMin.ToString("yyyy-MM-dd");
+
+            if (dateMax == DateTime.MinValue)
+            {
+                ViewBag.dateMax = DateTime.Now.AddDays(7).ToString("yyyy-MM-dd");
+            }
+            else ViewBag.dateMax = dateMax.ToString("yyyy-MM-dd");
+
+         
+
             //Requete de récupération des voyages et destination
             IQueryable<Voyage> reqVoyages =  _context.Voyage.Include(v => v.IdDestinationNavigation).ThenInclude(e => e.Photo)
                 .OrderBy(e=>e.IdDestinationNavigation.Nom);
@@ -47,9 +62,9 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             }
 
             //filtres par date de départ
-            if (dateMin.ToString("yyyy-MM-dd") != "05/03/2020" || dateMax.ToString("yyyy-MM-dd") != "05/03/2020")
+            if (dateMin != DateTime.MinValue || dateMax != DateTime.MinValue)
             {
-                reqVoyages = reqVoyages.Where(d => d.DateDepart >= dateMin && d.DateDepart >= dateMax);
+                reqVoyages = reqVoyages.Where(d => d.DateDepart >= dateMin && d.DateDepart <= dateMax);
             }
 
 
