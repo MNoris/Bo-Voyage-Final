@@ -94,6 +94,8 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             return View(voyage);
         }
 
+
+
         private bool VoyageExists(int id)
         {
             return _context.Voyage.Any(e => e.Id == id);
