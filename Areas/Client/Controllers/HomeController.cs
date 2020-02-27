@@ -73,6 +73,12 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             return View(top5Voyages);
         }
 
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
