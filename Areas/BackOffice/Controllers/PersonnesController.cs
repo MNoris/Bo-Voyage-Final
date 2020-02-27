@@ -20,9 +20,26 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         }
 
         // GET: BackOffice/Personnes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
-            return View(await _context.Personne.ToListAsync());
+
+            ViewBag.Search = search;
+
+
+            IQueryable<Personne> reqClients = _context.Personne.Where(p => p.TypePers == 1);
+
+
+
+            //fitrage par morceau de nom
+            if (!string.IsNullOrEmpty(search))
+            {
+                reqClients = reqClients.Where(e => e.Nom.Contains(search));
+            }
+
+
+            List<Personne> listeClients =await reqClients.AsNoTracking().ToListAsync();
+
+            return View(listeClients);
         }
 
         // GET: BackOffice/Personnes/Details/5
