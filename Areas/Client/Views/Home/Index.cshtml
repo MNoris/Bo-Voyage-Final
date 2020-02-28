@@ -41,7 +41,10 @@
                             {
                                 <tr>
                                     <td>
-                                       <partial name="_cardVoyageVuePartielle" model="@voyage"/>
+                                        <div class="bg-light rounded m-1 text-center">
+                                        <partial name="_cardVoyageVuePartielle" model="@voyage" />
+                                        <a asp-action="Details" asp-route-id="@voyage.Id" class="btn btn-primary">Plus de details</a>
+                                        </div>
                                     </td>
                                 </tr>
                             }

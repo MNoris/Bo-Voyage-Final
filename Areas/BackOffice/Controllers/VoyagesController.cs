@@ -79,7 +79,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
             }
 
             var voyage = await _context.Voyage
-                .Include(v => v.IdDestinationNavigation)
+                .Include(v => v.IdDestinationNavigation).ThenInclude(p=>p.Photo)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (voyage == null)
             {

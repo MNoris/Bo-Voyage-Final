@@ -61,7 +61,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                 cnx.Open();
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    while (reader.Read() && list5VoyagePays.Count < 6)
+                    while (reader.Read() && list5VoyagePays.Count < 5)
                     {
                         int idDest = (int)reader["Id"];
                         var voyages = _context.Voyage.Include(v => v.IdDestinationNavigation)

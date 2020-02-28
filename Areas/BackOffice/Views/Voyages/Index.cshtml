@@ -12,8 +12,11 @@
 <span class="row">
     @foreach (var item in Model)
     {
-
+        <div class="bg-info rounded m-1 text-center">
         <partial name="_cardVoyageVuePartielle" model="@item" />
+        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Plus de details</a>
 
+
+        </div>
     }
 </span>

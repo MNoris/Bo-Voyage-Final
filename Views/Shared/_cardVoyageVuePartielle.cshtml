@@ -1,34 +1,43 @@
 ﻿@model Bo_Voyage_Final.Models.Voyage
 
 
+@{
+    if (Model.IdDestinationNavigation.Photo.Count == 0)
+    {
+        Model.IdDestinationNavigation.Photo = new List<Photo>() {
+        new Photo() {
+            IdDestination = Model.IdDestination, NomFichier = "/Images/NoPicture.png"
+        }
+    };
 
+    }
+}
 
+<span class="col-4">
+    <div class="card">
+        <img class="card-img-top" src="@Model.IdDestinationNavigation.Photo.FirstOrDefault().NomFichier" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@Html.DisplayFor(modelItem => Model.IdDestinationNavigation.Nom)</h5>
+            <p class="card-text text-center">
+                <div>
+                    @Html.DisplayNameFor(model => model.DateDepart) :
+                    @Html.DisplayFor(modelItem => Model.DateDepart)
+                </div>
+                <div>
+                    @Html.DisplayNameFor(model => model.DateRetour) :
+                    @Html.DisplayFor(modelItem => Model.DateRetour)
+                </div>
+                <div>
+                    @Html.DisplayNameFor(model => model.PlacesDispo) :
+                    @Html.DisplayFor(modelItem => Model.PlacesDispo)
+                </div>
+                <div>
+                    @Html.DisplayNameFor(model => model.PrixHt) :
+                    @Html.DisplayFor(modelItem => Model.PrixHt)
+                </div>
 
-    <span class="col-4">
-        <div class="card">
-            <img class="card-img-top" src="@Model.IdDestinationNavigation.Photo.First().NomFichier" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">@Html.DisplayFor(modelItem => Model.IdDestinationNavigation.Nom)</h5>
-                <p class="card-text text-center">
-                    <div>
-                        @Html.DisplayNameFor(model => model.DateDepart) :
-                        @Html.DisplayFor(modelItem => Model.DateDepart)
-                    </div>
-                    <div>
-                        @Html.DisplayNameFor(model => model.DateRetour) :
-                        @Html.DisplayFor(modelItem => Model.DateRetour)
-                    </div>
-                    <div>
-                        @Html.DisplayNameFor(model => model.PlacesDispo) :
-                        @Html.DisplayFor(modelItem => Model.PlacesDispo)
-                    </div>
-                    <div>
-                        @Html.DisplayNameFor(model => model.PrixHt) :
-                        @Html.DisplayFor(modelItem => Model.PrixHt)
-                    </div>
+            </p>
 
-                </p>
-                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Plus de details</a>
-            </div>
         </div>
-    </span>
+    </div>
+</span>
