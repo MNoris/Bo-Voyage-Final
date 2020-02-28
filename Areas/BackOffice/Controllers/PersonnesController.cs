@@ -20,11 +20,22 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         }
 
         // GET: BackOffice/Personnes
-        public async Task<IActionResult> Index(string search, int idClient)
+        public async Task<IActionResult> Index(string search, int idClient, int sexe, int age)
         {
             //stockage des valeurs des filtres
             ViewBag.Search = search;
             ViewBag.IdClient = idClient;
+            ViewBag.Age = age;
+
+            var dicSexe = new Dictionary<int, string>()
+            { { 1, "Tous" },
+                { 2, "Masculin" },
+              { 3, "Feminin" }
+             
+             };
+          ViewBag.Sexes = new SelectList(dicSexe, "Key", "Value", sexe = sexe == 0 ? 1 : sexe);
+
+
 
             IQueryable<Personne> reqClients = _context.Personne.Where(p => p.TypePers == 1);
 
@@ -42,9 +53,26 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
             }
 
             //fitrage par sexe
+            if (sexe==2)
+            {
+            reqClients = reqClients.Where(s=>s.Civilite=="Mr");
 
+            }
+            if (sexe == 3)
+            {
+                reqClients = reqClients.Where(s => s.Civilite == "Mme");
+
+            }
 
             //filtrage par  age
+            if (age !=0)
+            {
+           var dateNaissanceMax =DateTime.Today.AddDays(-age*365.242);
+
+                     
+            reqClients = reqClients.Where((a => a.Datenaissance >= dateNaissanceMax));
+
+            }  
 
 
 
