@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ListeClients>
+	<Client Nom="Smith" Prénom="John" E-mail="john.smith@gmail.com" />
+	<Client Nom="Swim" Prénom="Dory" E-mail="dory.swim@gmail.com" />
+</ListeClients>

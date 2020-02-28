@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bo_Voyage_Final.Models;
+using System.Xml;
 
 namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
 {
@@ -99,6 +100,53 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
 
             return View(personne);
         }
+
+
+
+        public FileResult ExporterXml()
+        {
+            var clientsInfos = _context.Personne.Where(p => p.TypePers == 1);
+
+
+            // Définit les paramètres pour l'indentation du flux xml généré
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.IndentChars = "\t";
+
+            // Utilisation d'un XmlWriter avec les paramètres définis précédemment pour l'écriture du fichier
+            using (XmlWriter writer = XmlWriter.Create(@"wwwroot/Files/ListeClients.xml", settings))
+            {
+                // Ecriture du prologue
+                writer.WriteStartDocument();
+
+                // Ecriture de l'élément racine
+                writer.WriteStartElement("ListeClients");
+
+                // Ecriture du contenu interne, avec une structure différente
+               
+
+                foreach (var client in clientsInfos)
+                {
+                    writer.WriteStartElement("Client");
+                    writer.WriteAttributeString("Nom", client.Nom);
+                    writer.WriteAttributeString("Prénom", client.Prenom);
+                    writer.WriteAttributeString("E-mail", client.Email);
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+                // Ecriture de la balise fermante de l'élément racine et fin du document
+                writer.WriteEndDocument();
+            }
+
+
+            string fileName = "ListeClients.xml";
+            byte[] fileBytes = System.IO.File.ReadAllBytes($"wwwroot/Files/{fileName}");
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+
+
+
+
 
         // GET: BackOffice/Personnes/Create
         public IActionResult Create()

@@ -16,9 +16,14 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
             {
                 _context = context;
             }
-        public IActionResult Index()
+        public IActionResult Index(int nbJours=15)
         {
-            var DateLimite = DateTime.Now.AddDays(15);
+            
+
+            ViewBag.NbJours = nbJours;
+            
+
+            var DateLimite = DateTime.Now.AddDays(nbJours);
 
 
 
