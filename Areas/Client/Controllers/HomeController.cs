@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bo_Voyage_Final.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +18,14 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly BoVoyageContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, BoVoyageContext context)
+
+        public HomeController(ILogger<HomeController> logger, BoVoyageContext context,UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -75,8 +79,13 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
         public IActionResult Contact()
         {
-            ViewBag.sendingEmail = false;
+            var userEmail = _userManager.GetUserName(HttpContext.User);
+            var user = _context.Personne.Where(p => p.Email == userEmail).AsNoTracking().SingleOrDefault();
+            ViewBag.Prenom = user != null ? user.Prenom : "";
+            ViewBag.Nom = user != null ? user.Nom : "";
+            ViewBag.Email = user != null ? user.Email : "";
 
+            ViewBag.sendingEmail = false;
             return View();
         }
 

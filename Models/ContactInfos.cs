@@ -5,13 +5,13 @@ namespace Bo_Voyage_Final.Models
 {
     public class ContactInfos
     {
-        [Required]
+        [Required(ErrorMessage ="Votre nom doit êtee renseigné")]
         public string Nom { get; set;}
-        [Required]
+        [Required(ErrorMessage ="Votre prénom doit être renseigné")]
         public string Prenom { get; set; }
-        [Required,EmailAddress]
+        [Required(ErrorMessage ="Votre email doit être renseigné"),EmailAddress]
         public string Email { get; set; }
-        [StringLength(250)]
+        [Required(ErrorMessage ="Veuillez rédiger votre message our vos commentaires"),StringLength(300)]
         public string Message { get; set; }
     }
 }
