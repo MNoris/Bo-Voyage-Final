@@ -66,8 +66,8 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         public IActionResult EditerVoyages(string id)
         {
             ViewBag.Action = id;
-            var voyages = _context.Voyage.ToList();
-            return View("_ListVoyages",voyages);
+            var voyages = _context.Voyage.Include(v => v.IdDestinationNavigation).ToList();
+            return View(voyages);
         }
 
         // GET: Identity/Voyages/Details/5
@@ -107,7 +107,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
             {
                 _context.Add(voyage);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(EditerVoyages));
             }
             ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom", voyage.IdDestination);
             return View(voyage);
@@ -160,7 +160,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(EditerVoyages));
             }
             ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom", voyage.IdDestination);
             return View(voyage);
@@ -193,7 +193,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
             var voyage = await _context.Voyage.FindAsync(id);
             _context.Voyage.Remove(voyage);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(EditerVoyages));
         }
 
         private bool VoyageExists(int id)

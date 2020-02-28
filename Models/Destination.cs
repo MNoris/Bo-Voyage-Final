@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bo_Voyage_Final.Models
 {
@@ -14,7 +15,9 @@ namespace Bo_Voyage_Final.Models
 
         public int Id { get; set; }
         public int? IdParente { get; set; }
+        [Required(ErrorMessage =("Il faut avoir un nom"))]
         public string Nom { get; set; }
+        [Required(ErrorMessage ="Il faut un niveau")]
         public byte Niveau { get; set; }
         public string Description { get; set; }
 
