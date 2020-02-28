@@ -43,7 +43,7 @@
                                     <td>
                                         <div class="bg-light rounded m-1 text-center">
                                         <partial name="_cardVoyageVuePartielle" model="@voyage" />
-                                        <a asp-action="Details" asp-route-id="@voyage.Id" class="btn btn-primary">Plus de details</a>
+                                        <a asp-area="Client"asp-controller="Voyages"asp-action="Details" asp-route-id="@voyage.Id" class="btn btn-primary">Plus de details</a>
                                         </div>
                                     </td>
                                 </tr>
