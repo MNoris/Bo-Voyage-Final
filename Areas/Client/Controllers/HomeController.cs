@@ -73,7 +73,14 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             return View(top5Voyages);
         }
 
+        public IActionResult Contact()
+        {
+            ViewBag.sendingEmail = false;
 
+            return View();
+        }
+
+        [HttpPost]
         public IActionResult Contact(ContactInfos contactInfos)
         {
             ViewBag.sendingEmail = false;
