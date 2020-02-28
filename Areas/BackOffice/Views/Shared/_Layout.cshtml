@@ -28,9 +28,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="BackOffice" asp-controller="Home" asp-action="Index">Accueil</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="BackOffice" asp-controller="Voyages" asp-action="Index">Editer un voyage</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Editer voyages</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="BackOffice" asp-controller="Voyages" asp-action="Create">Créer</a>
+                                <a class="dropdown-item" asp-area="BackOffice" asp-controller="Voyages" asp-action="EditerVoyages" asp-route-id="editer">Modifier</a>
+                                <a class="dropdown-item" asp-area="BackOffice" asp-controller="Voyages" asp-action="EditerVoyages" asp-route-id="supprimer">Supprimer</a>
+                            </div>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="BackOffice" asp-controller="Reservation" asp-action="Index">Validation/Annulation de réservation</a>
                         </li>
@@ -45,7 +51,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

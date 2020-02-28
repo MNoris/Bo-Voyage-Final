@@ -62,6 +62,14 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
             return View(listeVoyages);
         }
 
+
+        public IActionResult EditerVoyages(string id)
+        {
+            ViewBag.Action = id;
+            var voyages = _context.Voyage.ToList();
+            return View("_ListVoyages",voyages);
+        }
+
         // GET: Identity/Voyages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
