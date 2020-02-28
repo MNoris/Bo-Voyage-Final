@@ -7,32 +7,41 @@
 <h1>Reservation</h1>
 
 <div>
-    <h4>
-        @($"Réservation pour le voyage à destination de {Model.Voyage.IdDestinationNavigation.Nom}, du {Model.Voyage.DateDepart} au {Model.Voyage.DateRetour}." +
-        $"\n {Model.Voyage.PlacesDispo} places disponibles, à {Model.Voyage.PrixHt}€ HT par personne," +
-        $" Réduction de {Model.Voyage.Reduction * 100}% par enfant de moins de 12 ans.")
-    </h4>
+    <p>
+        @($"Réservation pour le voyage à destination de {Model.Voyage.IdDestinationNavigation.Nom}, du {Model.Voyage.DateDepart.ToShortDateString()} au {Model.Voyage.DateRetour.ToShortDateString()}.")
+    </p>
+    <p>
+        @($"\r {Model.Voyage.PlacesDispo} places disponibles")
+    </p>
+    <form asp-action="AddVoyageur">
+        <input type="hidden" name="idPersonne" value="@Model.Personne.Id" />
+        <input type="hidden" name="idVoyage" value="@Model.Voyage.Id" />
+        <label for="nbVoyageurs">Nombre d'accompagnateurs</label>
+        <input type="number" name="nbVoyageurs" value="0" max="@Model.Voyage.PlacesDispo" />
+        <input type="submit" />
+    </form>
     <hr />
-    <dl class="row">
-        @foreach (var item in Model.Voyageurs)
+    <form asp-action="Payer">
+        <input type="hidden" name="idPersonne" value="@Model.Personne.Id" />
+        <input type="hidden" name="idVoyage" value="@Model.Voyage.Id" />
+        @for (int i = 0; i < Model.Voyageurs.Count(); i++)
         {
-            <input />
+            <div class="row">
+                <input asp-for="@Model.Voyageurs[i].Email" class="col-sm-3" />
+                <input asp-for="@Model.Voyageurs[i].Telephone" class="col-sm-3" />
+                <input asp-for="@Model.Voyageurs[i].Datenaissance" class="col-sm-3" />
+            </div>
         }
-    </dl>
-
-
+        <input type="submit" value="Suivant" />
+    </form>
 </div>
 <div>
-    <p>Prix total : @(Model.Voyage.PrixHt)€</p>
+    <p>
+        @((Model.Voyageurs.Count > 0 ? $"{Model.Voyageurs.Count + 1} Voyageurs." : "1 Voyageur.") +
+     $" Prix par voyageur : {Model.Voyage.PrixHt}€ HT. Une réduction de {Model.Voyage.Reduction * 100}% sera appliquée pour les enfants de moins de 12 ans.")
+    </p>
 </div>
-<form asp-action="AddVoyageur">
-    <input type="hidden" name="idPersonne" value="@Model.Personne.Id" />
-    <input type="hidden" name="idVoyage" value="@Model.Voyage.Id" />
-    <input type="number" name="nbVoyageurs" value="0"/>
-    <input type="submit" />
-</form>
 
 <div>
-    <a asp-action="Payer">Payer</a> |
     <a asp-action="Index">Annuler</a>
 </div>

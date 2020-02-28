@@ -10,7 +10,8 @@ namespace Bo_Voyage_Final.Models
         {
             Voyageur = new HashSet<Voyageur>();
         }
-        [Display(Name="ID client")]
+
+        [Display(Name = "ID client")]
         public int Id { get; set; }
         public byte TypePers { get; set; }
         [Display(Name = "Civilité")]

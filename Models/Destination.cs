@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace Bo_Voyage_Final.Models
 {
     public partial class Destination

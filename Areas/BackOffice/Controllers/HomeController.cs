@@ -35,7 +35,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
 
            List<Dossierresa> reservations = _context.Dossierresa.Include(d=>d.IdEtatDossierNavigation)
               .Where(d=>d.IdEtatDossierNavigation.Id==1).AsNoTracking().ToList();
-
+              
 
             VoyagesDossiersResa vdr = new VoyagesDossiersResa(voyages, reservations);
 

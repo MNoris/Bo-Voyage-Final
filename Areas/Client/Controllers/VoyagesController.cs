@@ -68,6 +68,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
         // GET: Client/Voyages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            //TODO comments & errors
             if (id == null)
                 return NotFound();
 
@@ -82,13 +83,9 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
         public async Task<IActionResult> Reserver(int? id)
         {
-            //    string mail = "";
-            //    if (!string.IsNullOrWhiteSpace((string)ViewBag.User))
-
-
-
             try
             {
+                //TODO comments & errors
                 var mail = _um.GetUserName(HttpContext.User);
                 var user = await _context.Personne.AsNoTracking().FirstOrDefaultAsync(p => p.Email == mail);
                 var voyage = await _context.Voyage.Include(v => v.IdDestinationNavigation).FirstOrDefaultAsync(v => v.Id == id);
@@ -105,8 +102,9 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddVoyageur(int? idPersonne, int? idVoyage, int? nbVoyageurs)
+        public IActionResult AddVoyageur(int idPersonne, int idVoyage, int? nbVoyageurs)
         {
+            //TODO comments & errors
             var personne = _context.Personne.Find(idPersonne);
             var voyage = _context.Voyage.Include(v => v.IdDestinationNavigation).FirstOrDefault(v => v.Id == idVoyage);
 
@@ -118,6 +116,55 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             }
 
             return View("Reserver", pv);
+        }
+
+        [HttpPost]
+        public IActionResult Payer(int idPersonne, int idVoyage, [Bind("Email", "Telephone", "Datenaissance")]List<Personne> voyageurs)
+        {
+            //TODO comments & errors
+            var client = _context.Personne.Find(idPersonne);
+            client.TypePers = 1;
+            client.Client = new Models.Client() { Id = idPersonne};
+            var voyage = _context.Voyage.Include(v => v.IdDestinationNavigation).FirstOrDefault(v => v.Id == idVoyage);
+
+            var pv = new PersonneVoyage(client, voyage);
+
+            var price = voyage.PrixHt;
+
+            foreach (var item in voyageurs)
+            {
+                var newVoyageur = new Personne();
+
+                newVoyageur.Civilite = "";
+                newVoyageur.Nom = "";
+                newVoyageur.Prenom = "";
+                newVoyageur.TypePers = 2;
+                newVoyageur.Datenaissance ??= null;
+
+                if (item.Datenaissance != null)
+                {
+                    var age = DateTime.Today.Year - ((DateTime)item.Datenaissance).Year;
+                    if (((DateTime)item.Datenaissance).Date > DateTime.Today.AddYears(-age)) age--;
+
+                    if (age <= 12)
+                        price += voyage.PrixHt * (1 - voyage.Reduction);
+                }
+                else
+                    price += voyage.PrixHt;
+
+                client.Voyageur.Add(new Voyageur() {Id = newVoyageur.Id, Idvoyage = idVoyage });
+            }
+
+            var dossierRes = new Dossierresa
+            {
+                IdClient = idPersonne,
+                IdEtatDossier = 1,
+                IdVoyage = idVoyage,
+                NumeroCb = "",
+                PrixTotal = price
+            };
+
+            return View("Payer", dossierRes);
         }
 
         //[HttpPost]

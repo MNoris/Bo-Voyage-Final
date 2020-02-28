@@ -71,6 +71,8 @@ namespace Bo_Voyage_Final.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.PrixTotal).HasColumnType("decimal(16, 4)");
+
                 entity.HasOne(d => d.IdClientNavigation)
                     .WithMany(p => p.Dossierresa)
                     .HasForeignKey(d => d.IdClient)

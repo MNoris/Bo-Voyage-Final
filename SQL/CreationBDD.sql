@@ -36,6 +36,7 @@ ALTER TABLE Destination ADD Constraint Destination_Pk PRIMARY KEY (Id)
 CREATE TABLE Dossierresa 
     ( Id INTEGER NOT NULL IDENTITY , 
      NumeroCB VARCHAR (16) , 
+	 PrixTotal DECIMAL (16,4) NOT NULL DEFAULT 0 ,
      IdClient INTEGER NOT NULL , 
      IdEtatDossier TINYINT NOT NULL , 
      IdVoyage INTEGER NOT Null ) 
