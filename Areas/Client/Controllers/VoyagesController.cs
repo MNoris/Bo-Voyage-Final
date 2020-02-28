@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bo_Voyage_Final.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Bo_Voyage_Final.Areas.Client.Controllers
 {
@@ -13,10 +14,12 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
     public class VoyagesController : Controller
     {
         private readonly BoVoyageContext _context;
+        private readonly UserManager<IdentityUser> _um;
 
-        public VoyagesController(BoVoyageContext context)
+        public VoyagesController(BoVoyageContext context, UserManager<IdentityUser> um)
         {
             _context = context;
+            _um = um;
         }
 
         // GET: Client/Voyages
@@ -86,7 +89,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
             try
             {
-                var mail = (string)ViewBag.User;
+                var mail = _um.GetUserName(HttpContext.User);
                 var user = await _context.Personne.AsNoTracking().FirstOrDefaultAsync(p => p.Email == mail);
                 var voyage = await _context.Voyage.Include(v => v.IdDestinationNavigation).FirstOrDefaultAsync(v => v.Id == id);
 
@@ -99,12 +102,31 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
                 throw;
             }
-
-
-
-
-            throw new NotImplementedException();
         }
+
+        [HttpPost]
+        public IActionResult AddVoyageur(int? idPersonne, int? idVoyage, int? nbVoyageurs)
+        {
+            var personne = _context.Personne.Find(idPersonne);
+            var voyage = _context.Voyage.Include(v => v.IdDestinationNavigation).FirstOrDefault(v => v.Id == idVoyage);
+
+            var pv = new PersonneVoyage(personne, voyage);
+
+            for (int i = 0; i < (int)nbVoyageurs; i++)
+            {
+                pv.addVoyageur();
+            }
+
+            return View("Reserver", pv);
+        }
+
+        //[HttpPost]
+        //public IActionResult RemoveVoyageur(PersonneVoyage personneVoyage)
+        //{
+        //    personneVoyage.removeVoyageur();
+
+        //    return View("Reserver", personneVoyage);
+        //}
 
         private bool VoyageExists(int id)
         {
