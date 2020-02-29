@@ -48,13 +48,32 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
 
             List<Voyage> list5VoyagePays = new List<Voyage>();
-            var req = @"select top(5) d.Id,d.Nom,count(*) NbVoyage
+            /*var req = @"select distinct top(5) d.Id,d.Nom,count(*) NbVoyage
                         from Voyage v
                         inner join Destination d on d.Id = v.IdDestination
                         where d.Niveau = 2
                         group by d.Id,d.Nom
                         order by count(*) desc
-                        ";
+                        ";*/
+
+
+
+            var req = @"select top(5) td.Id,td.Nom
+                        from
+                        (
+                        select top(5) d.Id, d.Nom, count(*) qtt
+                        from Voyage v
+                        inner
+                        join Destination d on d.Id = v.IdDestination
+                        where d.Niveau = 2
+                        group by d.Id, d.Nom
+                        order by count(*) desc
+                        )td
+                        group by td.Id,td.nom";
+
+
+
+
             using (var cnx = (SqlConnection)_context.Database.GetDbConnection())
             {
                 var cmd = new SqlCommand(req, cnx);
@@ -72,6 +91,9 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                 }
 
             }
+
+
+
             top5Voyages.Add(2, list5VoyagePays);
 
             return View(top5Voyages);

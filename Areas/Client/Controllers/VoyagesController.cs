@@ -23,7 +23,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
         }
 
         // GET: Client/Voyages
-        public async Task<IActionResult> Index(int IdDestination, decimal minPrice, decimal maxPrice, DateTime dateMin, DateTime dateMax)
+        public async Task<IActionResult> Index(int IdDestination, decimal minPrice, decimal maxPrice, DateTime dateMin, DateTime dateMax, int page = 1)
         {
             //Rq pour import des destinations dans la liste déroulante
             ViewBag.Destinations = _context.Destination.AsNoTracking().ToList();
@@ -60,7 +60,13 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             if (dateMin != DateTime.MinValue || dateMax != DateTime.MinValue)
                 reqVoyages = reqVoyages.Where(d => d.DateDepart >= dateMin && d.DateDepart <= dateMax);
 
-            var listeVoyages = await reqVoyages.AsNoTracking().ToListAsync();
+            //        var listeVoyages = await reqVoyages.AsNoTracking().ToListAsync();
+
+
+            
+
+            var listeVoyages = await PageItems<Voyage>.CreateAsync(
+       reqVoyages.AsNoTracking(), page, 15);
 
             return View(listeVoyages);
         }

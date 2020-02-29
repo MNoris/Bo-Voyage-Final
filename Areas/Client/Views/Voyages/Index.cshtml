@@ -1,20 +1,64 @@
-﻿@model IEnumerable<Bo_Voyage_Final.Models.Voyage>
+﻿@model PageItems<Bo_Voyage_Final.Models.Voyage>
 
 @{
     ViewData["Title"] = "Index";
 }
+    <div class="container-fluid">
 
-<h1>Liste des voyages</h1>
+
+        <h1>Liste des voyages</h1>
 
 
-<partial name="_FilterVoyageVuePartielle"/>
+        <partial name="_FilterVoyageVuePartielle" />
 
-<span class="row">
-    @foreach (var item in Model)
-    {
-    <div class="bg-info rounded m-1 text-center">
-        <partial name="_cardVoyageVuePartielle" model="@item" />
-        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Plus de details</a>
-     </div>
-    }
-</span>
+        <div class="row justify-content-center">
+
+            @foreach (var item in Model)
+            {
+                <div class="bg-info rounded m-1 text-center col-3">
+                    <partial name="_cardVoyageVuePartielle" model="@item" />
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Plus de details</a>
+                </div>
+            }
+        </div>
+
+
+        @{
+            var etatPrecedent = !Model.HasPreviousPage ? "disabled" : "";
+            var etatsuivant = !Model.HasNextPage ? "disabled" : "";
+        }
+
+
+        <div class="row justify-content-center">
+            <a asp-area="Client"
+               asp-controller="Voyages"
+               asp-action="Index"
+               asp-route-page="@(Model.PageIndex - 1)"
+               class="btn btn-primary @etatPrecedent">
+                Précédent
+            </a>
+
+
+            @for (int p = 1; p <= Model.TotalPages; p++)
+            {
+
+
+                <a asp-area="Client"
+                   asp-controller="Voyages"
+                   asp-action="Index"
+                   asp-route-page="@p"
+                   class="@(Model.PageIndex == p ? "font-weight-bold" : "")">@p</a>
+
+
+            }
+
+
+            <a asp-area="Client"
+               asp-controller="Voyages"
+               asp-action="Index"
+               asp-route-page="@(Model.PageIndex + 1)"
+               class="btn btn-primary @etatsuivant">
+                Suivant
+            </a>
+        </div>
+    </div>
