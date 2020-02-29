@@ -12,6 +12,33 @@
                 <option selected value="0">Toutes les destinations</option>
             </select>
         </div>
+
+        <div>
+            <label>Voyages par continent</label>
+            <select name="idCont"
+                    asp-items="@(new SelectList( ViewBag.Continent,"Id","Nom"/*,ViewData["IdCont"]*/))">
+                <option selected value="0">Tous les continents</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Voyages par pays</label>
+            <select name="idPays"
+                    asp-items="@(new SelectList( ViewBag.Pays,"Id","Nom"/*,ViewData["IdPays"]*/))">
+            <option selected value="0">Tous les pays</option> 
+            </select>
+        </div>
+
+        <div>
+            <label>Voyages par region</label>
+            <select name="idRegion"
+                    asp-items="@(new SelectList( ViewBag.Region,"Id","Nom"/*,ViewData["IdRegion"]*/))">
+               <option selected value="0">Toutes les régions</option>
+            </select>
+        </div>
+
+
+
         <label>Prix Minimal</label>
         <input type="number" name="minPrice" value="@ViewBag.MinPrice" step="50">
         <label>Prix Maximal</label>
