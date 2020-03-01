@@ -28,9 +28,9 @@ namespace Bo_Voyage_Final.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
             _emailSender = emailSender;
         }
-
+        [Display(Name = "Identifiant")]
         public string Username { get; set; }
-
+        [Display(Name = "Adresse e-mail")]
         public string Email { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
@@ -45,7 +45,7 @@ namespace Bo_Voyage_Final.Areas.Identity.Pages.Account.Manage
         {
             [Required]
             [EmailAddress]
-            [Display(Name = "New email")]
+            [Display(Name = "Nouvelle adresse e-mail")]
             public string NewEmail { get; set; }
         }
 

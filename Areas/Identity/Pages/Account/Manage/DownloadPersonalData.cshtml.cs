@@ -29,7 +29,7 @@ namespace Bo_Voyage_Final.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Impossible de connecter l'utilisateur avec l'ID '{_userManager.GetUserId(User)}'.");
             }
 
             _logger.LogInformation("User with ID '{UserId}' asked for their personal data.", _userManager.GetUserId(User));
