@@ -30,6 +30,8 @@
         var etatPrecedent = !Model.HasPreviousPage ? "disabled" : "";
         var etatsuivant = !Model.HasNextPage ? "disabled" : "";
     }
+@if (Model.TotalPages>1)
+{
 
     <div class="row justify-content-center">
         <a asp-area="Client"
@@ -63,5 +65,6 @@
             Suivant
         </a>
     </div>
+}
 
 
