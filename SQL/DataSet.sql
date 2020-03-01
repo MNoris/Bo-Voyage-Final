@@ -56,16 +56,44 @@ go
 
 
 insert into Photo(NomFichier , IdDestination)
-values ('/Images/birmanie_1.jpg', 7),
+values 
+('/Images/europe.jpg', 1),
+('/Images/afrique.jpg', 2),
+('/Images/Oceanie.jpg', 3),
+('/Images/Asie.jpg', 4),
+('/Images/Amerique.jpg', 5),
+('/Images/france_1.jpg', 6),
+('/Images/birmanie_1.jpg', 7),
 ('/Images/birmanie_2.jpg', 7),
 ('/Images/birmanie_3.jpg', 7),
-('/Images/bretagne_1.jpg', 23),
 ('/Images/canada_1.jpg', 8),
 ('/Images/canada_2.jpg', 8),
+('/Images/Etats_unis.jpg', 9),
+('/Images/chine.jpg', 10),
+('/Images/japon.jpg', 11),
+('/Images/Bresil.jpg', 12),
+('/Images/VietNam.jpg', 13),
+('/Images/russie.jpg', 14),
+('/Images/perou.jpg', 15),
+('/Images/autriche.jpg', 16),
+('/Images/Mexique.jpg', 17),
+('/Images/Italie.jpg', 18),
+('/Images/AfriqueDuSud.jpg', 19),
+('/Images/Senegal.jpg', 20),
+('/Images/Tunisie.jpg', 21),
+('/Images/Australie.jpg', 22),
+('/Images/bretagne_1.jpg', 23),
 ('/Images/guadeloupe_1.jpg', 24),
 ('/Images/guadeloupe_2.jpg', 24),
+('/Images/Hokkaido.jpg', 25),
+('/Images/BeloHorizonte.jpg', 26),
+('/Images/Toscane.jpg', 27),
+('/Images/Kwazulu.jpg', 28),
+('/Images/Quebec.jpg', 29),
+('/Images/californie.jpg', 30),
 ('/Images/saint-barth_1.jpg', 31),
 ('/Images/saint-barth_2.jpg', 31)
+
 
 go
 
