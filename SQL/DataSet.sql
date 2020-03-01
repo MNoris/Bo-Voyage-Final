@@ -10,11 +10,11 @@ go
 
 insert into Destination(Nom, Niveau, Description)
 values
-('Europe ', 1, 'Terre des rois de naguère.'),
-('Afrique ', 1, 'De Casablanca à Pretoria'),
-('Oceanie ', 1, 'Les plus grands archipels à votre portée.'),
-('Asie ', 1, 'De la Chine au Japon, en passant par le Tibet.'),
-('Amerique ', 1, 'A la découverte du nouveau-monde.')
+('Europe', 1, 'Terre des rois de naguère.'),
+('Afrique', 1, 'De Casablanca à Pretoria'),
+('Oceanie', 1, 'Les plus grands archipels à votre portée.'),
+('Asie', 1, 'De la Chine au Japon, en passant par le Tibet.'),
+('Amerique', 1, 'A la découverte du nouveau-monde.')
 go
 
 
@@ -43,7 +43,7 @@ go
 
 insert into Destination(Nom, Niveau,IdParente, Description)
 values
-('Bretagne ', 3, 6, 'Superbe région. Terre de légendes. De nombreux spots pour le surf et le kitesurf.'),
+('Bretagne', 3, 6, 'Superbe région. Terre de légendes. De nombreux spots pour le surf et le kitesurf.'),
 ('Guadeloupe', 3, 6,'Dans un site exceptionnel,en bordure d''un petit lagon turquoise, tout est réuni pour un séjour paradisiaque. Découvrez les merveilles de grande terre et de basse terre, les joies des plongées dans la réserve naturelle.'),
 ('Hokkaido', 3, 11,''),
 ('belo horizonte', 3, 12,''),
