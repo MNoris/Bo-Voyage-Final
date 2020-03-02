@@ -79,7 +79,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                     foreach (var voy2 in req2)
                     {
                         if (voy3.IdDestinationNavigation.Niveau == 3 && voy3.IdDestinationNavigation.IdParente == voy2.IdDestination)
-                        { 
+                        {
                             idRegional.Add(voy3.Id);
                         }
                     }
@@ -204,34 +204,50 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
         {
             //TODO comments & errors
             var client = _context.Personne.Find(idPersonne);
-            client.TypePers = 1;
-            client.Client = new Models.Client { Id = idPersonne };
+
+            if (!_context.Client.Any(c => c.Id == idPersonne))
+            {
+                client.TypePers = 1;
+                client.Client = new Models.Client { Id = idPersonne };
+            }
             var voyage = _context.Voyage.Include(v => v.IdDestinationNavigation).FirstOrDefault(v => v.Id == idVoyage);
-
-            var pv = new PersonneVoyage(client, voyage);
-
             var price = voyage.PrixHt;
 
             foreach (var item in voyageurs)
             {
-                item.Civilite = "";
-                item.Nom = "";
-                item.Prenom = "";
-                item.TypePers = 2;
-                item.Datenaissance ??= null;
+                if (!_context.Personne.Where(p => p.Email == item.Email).Any())
+                {
+                    item.Civilite = "";
+                    item.Nom = "";
+                    item.Prenom = "";
+                    item.TypePers = 2;
+                    item.Datenaissance ??= null;
+                    item.Telephone ??= null;
+
+                    _context.Personne.Add(item);
+                    _context.SaveChanges();
+                    Voyageur voyageur = new Voyageur() { Id = item.Id, Idvoyage = idVoyage };
+                    _context.Voyageur.Add(voyageur);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    var voyageur = _context.Personne.Where(p => p.Email == item.Email).FirstOrDefault();
+                    _context.Voyageur.Add(new Voyageur() { Id = voyageur.Id, Idvoyage = idVoyage });
+                    _context.SaveChanges();
+                }
 
                 if (item.Datenaissance != null)
                 {
                     var age = DateTime.Today.Year - ((DateTime)item.Datenaissance).Year;
                     if (((DateTime)item.Datenaissance).Date > DateTime.Today.AddYears(-age)) age--;
 
+                    // Réduc enfant
                     if (age <= 12)
-                        price += voyage.PrixHt * (1 - voyage.Reduction);
+                        price += voyage.PrixHt * (1 - voyage.Reduction) * (decimal)0.40;
                 }
                 else
-                    price += voyage.PrixHt;
-
-                client.Voyageur.Add(new Voyageur() { Id = item.Id, Idvoyage = idVoyage });
+                    price += voyage.PrixHt * (1 - voyage.Reduction);
             }
 
             var dossierRes = new Dossierresa
@@ -246,6 +262,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             try
             {
                 _context.Personne.Update(client);
+                //_context.Personne.AddRange(voyageurs);
                 _context.SaveChanges();
             }
             catch (Exception e)
@@ -258,17 +275,11 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
         }
 
         [HttpPost]
-        public IActionResult EnregistrerResa(string numeroCb, decimal prixTotal, int idPersonne, int idVoyage)
+        public IActionResult EnregistrerResa([Bind("NumeroCb", "PrixTotal", "IdClient", "IdVoyage")] Dossierresa dossier)
         {
             //TODO comments & errors
-            var dossier = new Dossierresa
-            {
-                IdClient = idPersonne,
-                IdEtatDossier = 1,
-                IdVoyage = idVoyage,
-                PrixTotal = prixTotal,
-                NumeroCb = numeroCb
-            };
+
+            dossier.IdEtatDossier = 1;
 
             try
             {
@@ -281,7 +292,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                 throw e;
             }
 
-            return View("../Personnes/MesReservations");
+            return RedirectToAction("Index", "Dossierresas");
         }
 
         //[HttpPost]
