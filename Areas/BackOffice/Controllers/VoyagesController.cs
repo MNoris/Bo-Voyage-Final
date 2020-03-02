@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bo_Voyage_Final.Models;
+using Microsoft.Data.SqlClient;
 
 namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
 {
@@ -154,7 +155,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
             }
 
             var voyage = await _context.Voyage
-                .Include(v => v.IdDestinationNavigation).ThenInclude(p=>p.Photo)
+                .Include(v => v.IdDestinationNavigation).ThenInclude(p => p.Photo)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (voyage == null)
             {
@@ -265,15 +266,40 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
             var voyage = await _context.Voyage.FindAsync(id);
-            _context.Voyage.Remove(voyage);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Voyage.Remove(voyage);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                if (e.InnerException is SqlException)
+                {
+                    if (((SqlException)e.InnerException).Number == 547)
+                    {
+
+                        return View("ErreurSuppression");
+                    }
+                }
+            }
             return RedirectToAction(nameof(EditerVoyages));
         }
 
         private bool VoyageExists(int id)
         {
             return _context.Voyage.Any(e => e.Id == id);
+        }
+
+        public ActionResult Error(SqlException e)
+        {
+            if (e.Number == 547)
+            {
+                return BadRequest("Probleme!! lien avec d'autre table (clé etrangere)");
+            }
+            return StatusCode(500, e.Message);
+
         }
     }
 }

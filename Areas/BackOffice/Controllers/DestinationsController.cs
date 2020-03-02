@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bo_Voyage_Final.Models;
+using Microsoft.Data.SqlClient;
 
 namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
 {
@@ -147,8 +148,23 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var destination = await _context.Destination.FindAsync(id);
-            _context.Destination.Remove(destination);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                _context.Destination.Remove(destination);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                if (e.InnerException is SqlException)
+                {
+                    if (((SqlException)e.InnerException).Number == 547)
+                    {
+
+                        return View("ErreurSuppression");
+                    }
+                }
+            }
             return RedirectToAction(nameof(Index));
         }
 
