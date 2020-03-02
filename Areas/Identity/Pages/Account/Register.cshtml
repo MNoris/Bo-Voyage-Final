@@ -27,6 +27,34 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Input.Civilite"></label>
+                <select asp-for="Input.Civilite" class="form-control">
+                    <option value="Mr">Monsieur</option>
+                    <option value="Mme">Madame</option>
+                </select>
+                <span asp-validation-for="Input.Civilite" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Prenom"></label>
+                <input asp-for="Input.Prenom" class="form-control" />
+                <span asp-validation-for="Input.Prenom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Nom"></label>
+                <input asp-for="Input.Nom" class="form-control" />
+                <span asp-validation-for="Input.Nom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Datenaissance"></label>
+                <input asp-for="Input.Datenaissance" class="form-control" />
+                <span asp-validation-for="Input.Datenaissance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Telephone"></label>
+                <input asp-for="Input.Telephone" class="form-control" />
+                <span asp-validation-for="Input.Telephone" class="text-danger"></span>
+            </div>
             <button type="submit" class="btn btn-primary">S'inscrire</button>
         </form>
     </div>
