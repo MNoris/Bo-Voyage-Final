@@ -35,7 +35,8 @@ namespace Bo_Voyage_Final
             services.AddDbContext<BoVoyageContext>(options =>
                  options.UseSqlServer(
                      Configuration.GetConnectionString("BoVoyageConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
