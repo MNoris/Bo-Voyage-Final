@@ -1,0 +1,47 @@
+﻿@model Bo_Voyage_Final.Models.Dossierresa
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Dossierresa</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NumeroCb" class="control-label"></label>
+                <input asp-for="NumeroCb" class="form-control" />
+                <span asp-validation-for="NumeroCb" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrixTotal" class="control-label"></label>
+                <input asp-for="PrixTotal" class="form-control" />
+                <span asp-validation-for="PrixTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdClient" class="control-label"></label>
+                <select asp-for="IdClient" class ="form-control" asp-items="ViewBag.IdClient"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdEtatDossier" class="control-label"></label>
+                <select asp-for="IdEtatDossier" class ="form-control" asp-items="ViewBag.IdEtatDossier"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdVoyage" class="control-label"></label>
+                <select asp-for="IdVoyage" class ="form-control" asp-items="ViewBag.IdVoyage"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

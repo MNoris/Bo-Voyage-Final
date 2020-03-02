@@ -1,0 +1,51 @@
+﻿@model Bo_Voyage_Final.Models.Dossierresa
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+
+<h1>Validation du dossier</h1>
+
+<h4>Dossier numéro @Model.Id</h4>
+<hr />
+@{
+    if (Model.IdEtatDossierNavigation != null ||
+        Model.IdVoyageNavigation.Voyageur.Count > Model.IdVoyageNavigation.PlacesDispo)
+    {
+        <div class="container-fluid m-2 p-1 bg-secondary">
+            <h1> Le dossier doit être refusé</h1>
+            <h2>Manque de place ou le voyage a été supprimer</h2>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="NumeroCb" class="form-control" />
+                    <input type="hidden" asp-for="PrixTotal" class="form-control" />
+                    <select asp-for="IdClient" hidden asp-items="ViewBag.IdClient"></select>
+                    <select asp-for="IdVoyage" hidden asp-items="ViewBag.IdVoyage"></select>
+                    <div class="form-group">
+                        <label asp-for="IdEtatDossier" class="control-label"></label>
+                        <select asp-for="IdEtatDossier" class="form-control" asp-items="ViewBag.IdEtatDossier"></select>
+                        <span asp-validation-for="IdEtatDossier" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Valider" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+
+
+}
+<div>
+    <a asp-action="Index" class="btn btn-outline-info">Retour à la list</a>
+</div>
+

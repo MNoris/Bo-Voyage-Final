@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Bo_Voyage_Final.Models.Dossierresa>
+
+
+
+<div class="bg-primary rounded">
+    <h1>Liste des réservations</h1>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdClient)
+            </th>
+            <th>
+                Destination
+            </th>
+            <th>
+                Nombres des voyageurs
+            </th>
+            <th>
+                Départ
+            </th>
+            <th>
+                Retour
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrixTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdEtatDossierNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdClient)
+            </td>
+
+            <td>
+                @item.IdVoyageNavigation.IdDestinationNavigation.Nom
+            </td>
+
+            <td>
+                @item.IdVoyageNavigation.Voyageur.Count
+            </td>
+            <td>
+                @item.IdVoyageNavigation.DateDepart.ToString("dd/MM/yyyy")
+            </td>
+            <td>
+                @item.IdVoyageNavigation.DateRetour.ToString("dd/MM/yyyy")
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PrixTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdEtatDossierNavigation.Libelle)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Détails</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary">Modifier</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Supprimer</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
