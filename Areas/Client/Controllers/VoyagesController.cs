@@ -128,6 +128,22 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             return View(listeVoyages);
         }
 
+
+
+
+        public async Task<IActionResult> ListeDestinationVoyage(int id)
+        {
+            var listeVoyages =  _context.Voyage.Include(v => v.IdDestinationNavigation).ThenInclude(d => d.Photo).Where(v => v.IdDestination == id);
+
+
+            var voyage = listeVoyages.FirstOrDefault();
+            ViewBag.NomDestination = voyage.IdDestinationNavigation.Nom;
+
+
+            return View(await listeVoyages.AsNoTracking().ToListAsync());
+        }
+
+
         // GET: Client/Voyages/Details/5
         public async Task<IActionResult> Details(int? id)
         {

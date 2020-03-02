@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Bo_Voyage_Final.Models.Voyage>
+
+@{
+    ViewData["Title"] = "View";
+}
+
+    <h1>Nos offres pour la destination : @ViewBag.NomDestination</h1>
+
+
+<span class="row justify-content-center">
+
+    @foreach (var item in Model)
+    {
+        <div class="bg-info rounded m-1 text-center " style="width:18%">
+            <partial name="_cardVoyageVuePartielle" model="@item" />
+            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Plus de details</a>
+        </div>
+    }
+</span>

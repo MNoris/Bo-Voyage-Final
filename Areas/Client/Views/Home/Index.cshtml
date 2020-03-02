@@ -23,6 +23,13 @@
                 </br>
                 </br>
                 </br>
+                </br>
+                </br>
+                </br>
+                </br>
+                </br>
+                </br>
+                </br>
                 <hr class="my-4">
                 <p>Visionnez la rubrique "A propos" ou cliquez sur le bouton ci-dessous pour obtenir plus d'informations.</p>
                 <p class="lead">
@@ -40,8 +47,7 @@
     List<string> Libelle = new List<string>()
 {
               "Petits prix" ,
-              "Départs iminents",
-              "Destinations les plus visitées"
+              "Départs iminents"
     };
 }
 <div class="text-center  container-fluid bg-light">
@@ -51,35 +57,64 @@
 
     <div class="container">
         <div class="row">
-                @foreach (var item in Model)
-                {
-                    <div class="col-4">
-                        <table class="table">
-                            <thead>
+            @foreach (var item in Model)
+            {
+                <div class="col-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Libelle[item.Key]
+                                    @*@Html.DisplayFor(model => item.Key)*@
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var voyage in item.Value)
+                            {
                                 <tr>
-                                    <th>
-                                        @Libelle[item.Key]
-                                        @*@Html.DisplayFor(model => item.Key)*@
-                                    </th>
+                                    <td>
+                                        <div class="bg-info rounded m-1 text-center " style="width:100%">
+                                            <partial name="_cardVoyageVuePartielle" model="@voyage" />
+                                            <a asp-area="Client" asp-controller="Voyages" asp-action="Details" asp-route-id="@voyage.Id" class="btn btn-primary">Plus de details</a>
+                                        </div>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var voyage in item.Value)
-                                {
-                                    <tr>
-                                        <td>
-                                            <div class="bg-info rounded m-1 text-center " style="width:100%">
-                                                <partial name="_cardVoyageVuePartielle" model="@voyage" />
-                                                <a asp-area="Client" asp-controller="Voyages" asp-action="Details" asp-route-id="@voyage.Id" class="btn btn-primary">Plus de details</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                }
-           
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+
+
+            <div class="col-4">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Destinations les plus visitées
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var destination in @ViewBag.Destinations)
+                        {
+
+                            <tr>
+                                <td>
+                                    <div class="bg-info rounded m-1 text-center " style="width:100%">
+                                        <partial name="_cardDestinationVuePartielle" model="@destination" />
+                                        <a asp-area="Client" asp-controller="Voyages" asp-action="ListeDestinationVoyage" asp-route-id="@destination.Id" class="btn btn-primary">Afficher la liste</a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
 

@@ -1,0 +1,30 @@
+﻿@model Bo_Voyage_Final.Models.Destination
+
+
+@{
+    if (Model.Photo.Count == 0)
+    {
+        Model.Photo = new List<Photo>() {
+        new Photo() {
+            IdDestination = Model.Id, NomFichier = "/Images/NoPicture.png"
+        }
+    };
+
+    }
+}
+
+<span class="col-4">
+    <div class="card" style="height:500px">
+        <img class="card-img-top" style="height:280px" src="@Model.Photo.FirstOrDefault().NomFichier" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@Html.DisplayFor(modelItem => Model.Nom)</h5>
+            <p class="card-text text-center">
+                <div>
+                  @Html.DisplayFor(modelItem => Model.Description)
+                </div>
+
+            </p>
+
+        </div>
+    </div>
+</span>
