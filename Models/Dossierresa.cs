@@ -20,6 +20,7 @@ namespace Bo_Voyage_Final.Models
         public int IdVoyage { get; set; }
 
         public virtual Client IdClientNavigation { get; set; }
+        [Display(Name ="Etat du dossier")]
         public virtual Etatdossier IdEtatDossierNavigation { get; set; }
         public virtual Voyage IdVoyageNavigation { get; set; }
     }
