@@ -242,11 +242,12 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                     var age = DateTime.Today.Year - ((DateTime)item.Datenaissance).Year;
                     if (((DateTime)item.Datenaissance).Date > DateTime.Today.AddYears(-age)) age--;
 
+                    // Réduc enfant
                     if (age <= 12)
-                        price += voyage.PrixHt * (1 - voyage.Reduction);
+                        price += voyage.PrixHt * (1 - voyage.Reduction) * (decimal)0.40;
                 }
                 else
-                    price += voyage.PrixHt;
+                    price += voyage.PrixHt * (1 - voyage.Reduction);
             }
 
             var dossierRes = new Dossierresa
