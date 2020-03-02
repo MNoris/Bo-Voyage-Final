@@ -138,6 +138,9 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             var voyage = await _context.Voyage
                 .Include(v => v.IdDestinationNavigation).ThenInclude(d => d.Photo)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            ViewBag.Nom = voyage.IdDestinationNavigation.Nom;
+
             if (voyage == null)
                 return NotFound();
 

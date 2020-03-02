@@ -3,12 +3,37 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
-
-<partial name="DetailsVoyageVuePartielle"/>
+<div class="container-fluid">
+    <div class="row d-flex justify-content-center">
+        <div>
+            <h1> @ViewBag.Nom</h1>
+        </div>
+    </div>
+</div>
 <br />
-<div>
-    <a class="btn btn-primary" asp-action="Reserver" asp-route-id="@Model.Id">Réserver</a> |
-    <a class="btn btn-danger" asp-action="Index">Retour</a>
+<div class="container-fluid">
+    <div class="row d-flex justify-content-center">
+        <div>
+            <h2>Details du voyage</h2>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<partial name="DetailsVoyageVuePartielle" />
+<br />
+<div class="container-fluid">
+    <div class="row d-flex justify-content-center">
+        <div class="col-4">
+        </div>
+        <div class="col-2">
+            <a class="btn btn-primary" asp-action="Reserver" asp-route-id="@Model.Id">Réserver</a>
+        </div>
+        <div class="col-2">
+            <a class="btn btn-danger" asp-action="Index">Retour</a>
+
+        </div>
+        <div class="col-4">
+        </div>
+    </div>
 </div>
