@@ -10,7 +10,7 @@ namespace Bo_Voyage_Final.Models
         public int Id { get; set; }
         [Display(Name = "Numéro de carte bleue")]
         public string NumeroCb { get; set; }
-        [Display(Name = "¨Prix Total")]
+        [Display(Name = "Prix Total")]
         public decimal PrixTotal { get; set; }
         [Display(Name = "Numéro client")]
         public int IdClient { get; set; }

@@ -6,43 +6,25 @@
 
 <h1>Payer</h1>
 
+<form>
+    <div>
+        <h4>Dossierresa</h4>
+        <hr />
+        <div class="form-group">
+            <label asp-for="NumeroCb" class="control-label"></label>
+            <input asp-for="NumeroCb" name="numeroCb" class="form-control" />
+            <span asp-validation-for="NumeroCb" class="text-danger"></span>
+        </div>
+        <div class="col-sm-2">
+            <label asp-for="PrixTotal" class="control-label"></label>
+            <input asp-for="PrixTotal" name="prixTotal" class="form-control" disabled />
+        </div>
+        <input type="hidden" name="idPersonne" value="@Model.IdClient" />
+        <input type="hidden" name="idVoyage" value="@Model.IdVoyage" />
+        <input type="submit" value="Valider" />
+    </div>
+</form>
 <div>
-    <h4>Dossierresa</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumeroCb)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumeroCb)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PrixTotal)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrixTotal)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdClientNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdClientNavigation.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdEtatDossierNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdEtatDossierNavigation.Libelle)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdVoyageNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdVoyageNavigation.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Reserver" asp-route-id="@Model.IdVoyage">Revenir en arrière</a> |
+    <a asp-action="Index">Retour à la liste</a>
 </div>
