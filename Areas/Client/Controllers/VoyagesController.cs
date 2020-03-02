@@ -226,7 +226,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
             try
             {
-                _context.Personne.Add(client);
+                _context.Personne.Update(client);
                 _context.SaveChanges();
             }
             catch (Exception e)
