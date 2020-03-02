@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Bo_Voyage_Final.Models;
 using Bo_Voyage_Final.Client.Data;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 
 namespace Bo_Voyage_Final
 {
@@ -56,6 +57,14 @@ namespace Bo_Voyage_Final
                 // User settings
                 options.User.RequireUniqueEmail = true;
             });
+
+            services.AddRazorPages()
+                .AddMvcOptions(options =>
+                {
+                    options.MaxModelValidationErrors = 50;
+                    options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+                        _ => "Ce champ est obligatoire.");
+                });
 
         }
 

@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Modification d'une destination</h1>
 
-<h4>Destination</h4>
+<h4>Destination numéro @Model.Id</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -41,6 +41,8 @@
 </div>
 
 <div>
+    <a asp-controller="Photos" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Attribuer des photos</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Supprimer</a>
     <a asp-action="Index" class="btn btn-outline-info">Retour à la liste</a>
 </div>
 

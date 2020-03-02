@@ -5,11 +5,11 @@
     <div class="bg-light  rounded mb-2">
         <h1 class="h1 font-italic font-weight-bold text-dark">La liste de tous les voyages dans notre base de données</h1>
     </div>
-    <div class="col-2">
+    <div class="col-4">
         <a asp-area="BackOffice"
            asp-controller="Voyages"
            asp-action="Create"
-           class="btn btn-success btn-lg btn-block font-weight-bold">Créer un voyage</a>
+           class="btn btn-outline-success font-weight-bold">Créer un voyage</a>
     </div>
 
     <table class="table">
@@ -29,9 +29,6 @@
                 </th>
                 <th>
                     <span>@Html.DisplayNameFor(model => model.Reduction) % </span> 
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Descriptif)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.IdDestinationNavigation)
@@ -59,14 +56,12 @@
                         @((int)(item.Reduction * 100))
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Descriptif)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.IdDestinationNavigation.Nom)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary">Modifier</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Supprimer</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Détails</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary">Modifier</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Supprimer</a>
                     </td>
                 </tr>
             }

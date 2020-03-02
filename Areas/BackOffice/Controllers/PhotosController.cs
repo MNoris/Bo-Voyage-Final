@@ -6,17 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bo_Voyage_Final.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
-{
+{ 
     [Area("BackOffice")]
     public class PhotosController : Controller
     {
         private readonly BoVoyageContext _context;
+        [Obsolete]
+        private readonly IHostingEnvironment _env;
 
-        public PhotosController(BoVoyageContext context)
+        [Obsolete]
+        public PhotosController(BoVoyageContext context,IHostingEnvironment environment)
         {
             _context = context;
+            _env = environment;
         }
 
         // GET: BackOffice/Photos
@@ -46,28 +53,49 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         }
 
         // GET: BackOffice/Photos/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom");
+            ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom",id);
             return View();
         }
 
-        // POST: BackOffice/Photos/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NomFichier,IdDestination")] Photo photo)
+        [Obsolete]
+        public  async Task<IActionResult> Create(IFormFile file, [Bind("Id,NomFichier,IdDestination")] Photo photo)
         {
+            
             if (ModelState.IsValid)
             {
+                var imagesPath = "/Images/";
+                var uploadPath = _env.WebRootPath + imagesPath;
+                var nomImage = Path.GetFileName(Guid.NewGuid().ToString() + "." + file.FileName.Split(".")[1]);
+                string fullPath = uploadPath + nomImage;
+                using var fileStreamer = new FileStream(fullPath, FileMode.Create);
+                await file.CopyToAsync(fileStreamer);
+
+                photo.NomFichier = imagesPath + nomImage;
                 _context.Add(photo);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View("PhotoLoaded");
+
+
             }
-            ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom", photo.IdDestination);
-            return View(photo);
+            return View();
         }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,NomFichier,IdDestination")] Photo photo)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(photo);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom", photo.IdDestination);
+        //    return View(photo);
+        //}
 
         // GET: BackOffice/Photos/Edit/5
         public async Task<IActionResult> Edit(int? id)

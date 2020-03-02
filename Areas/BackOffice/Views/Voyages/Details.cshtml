@@ -5,11 +5,12 @@
      ViewBag.User = User.Identity.Name;
 }
 
-<h1>Details</h1>
+<h1>Détails du voyage</h1>
 
 <partial name="DetailsVoyageVuePartielle" />
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Modifier</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Supprimer</a>
+    <a asp-action="EditerVoyages" class="btn btn-outline-info">Retour à la liste</a>
 </div>
