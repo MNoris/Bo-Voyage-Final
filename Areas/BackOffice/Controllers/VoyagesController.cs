@@ -20,23 +20,33 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         }
 
         // GET: Identity/Voyages
-        public async Task<IActionResult> Index(int IdDestination, decimal minPrice, decimal maxPrice, DateTime dateMin, DateTime dateMax)
+        public async Task<IActionResult> Index(int idCont, int idPays, int idRegion, decimal minPrice, decimal maxPrice, DateTime dateMin, DateTime dateMax, int page = 1)
         {
             //Rq pour import des destinations dans la liste déroulante
             ViewBag.Destinations = _context.Destination.AsNoTracking().ToList();
             //Memo des valeurs des filtres en cours
-            ViewData["idDestination"] = IdDestination;
+
             ViewBag.MinPrice = minPrice;
             ViewBag.MaxPrice = maxPrice;
 
             //Passer un string format yyyy-MM-dd comme valeur par défaut pour l'input type date
             //valeur par defaut minimal : date du jour, max : 7jours plus tard
             if (dateMin == DateTime.MinValue)
-                ViewBag.dateMin = DateTime.Now.ToString("yyyy-MM-dd");
+            {
+                dateMin = DateTime.Today;
+
+                ViewBag.dateMin = dateMin.ToString("yyyy-MM-dd");
+
+            }
             else ViewBag.dateMin = dateMin.ToString("yyyy-MM-dd");
 
             if (dateMax == DateTime.MinValue)
-                ViewBag.dateMax = DateTime.Now.AddDays(7).ToString("yyyy-MM-dd");
+            {
+                dateMax = DateTime.Today.AddDays(7);
+
+                ViewBag.dateMax = dateMax.ToString("yyyy-MM-dd");
+
+            }
             else ViewBag.dateMax = dateMax.ToString("yyyy-MM-dd");
 
 
@@ -45,19 +55,84 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
             IQueryable<Voyage> reqVoyages = _context.Voyage.Where(v => v.PlacesDispo > 0).Include(v => v.IdDestinationNavigation).ThenInclude(e => e.Photo)
                 .OrderBy(e => e.IdDestinationNavigation.Nom);
 
-            if (IdDestination != 0)
-                //Application du filtre Sur les destinations
-                reqVoyages = reqVoyages.Where(d => d.IdDestination == IdDestination);
+
+            //////////////////////////////////////////////////////////
+            ViewBag.Continent = _context.Destination.Where(d => d.Niveau == 1).AsNoTracking().ToList();
+            ViewData["idCont"] = idCont;
+
+
+            ViewBag.Pays = _context.Destination.Where(d => d.Niveau == 2 && d.IdParente == idCont).AsNoTracking().ToList();
+            ViewData["IdPays"] = idPays;
+
+            ViewBag.Region = _context.Destination.Where(d => d.Niveau == 3 && d.IdParente == idPays).AsNoTracking().ToList();
+            ViewData["IdRegion"] = idRegion;
+
+
+
+            if (idCont != 0)
+            {  //Application du filtre Sur les continents
+
+
+
+                //recuperation de la liste des iddestination des region de l'id du continent
+                var req2 = reqVoyages.Where(d => d.IdDestinationNavigation.IdParente == idCont).ToList();
+                var req3 = reqVoyages.Where(d => d.IdDestinationNavigation.Niveau == 3).ToList();
+                List<int> idRegional = new List<int>();
+
+                foreach (var voy3 in req3)
+                {
+                    foreach (var voy2 in req2)
+                    {
+                        if (voy3.IdDestinationNavigation.Niveau == 3 && voy3.IdDestinationNavigation.IdParente == voy2.IdDestination)
+                        {
+                            idRegional.Add(voy3.Id);
+                        }
+                    }
+                }
+
+                // req 4 = toutes les regions
+                var req4 = reqVoyages.Where(d => d.IdDestinationNavigation.Niveau == 3);
+
+
+
+                // reqvoyages contients les voyages du continent et pays concernés
+                reqVoyages = reqVoyages.Where(d => (d.IdDestination == idCont) || (d.IdDestinationNavigation.IdParente == idCont));
+
+                //pour chaque id de la liste idRegional, req 5 recupère un voyage dans les regions,
+                //puis fusionne cette valeur à reqVoyage
+                foreach (var identifiant in idRegional)
+                {
+                    var req5 = req4.Where(a => a.Id == identifiant);
+                    reqVoyages = reqVoyages.Union(req5);
+                }
+
+
+                //filtre pays, dépendant du conitnent
+                if (idPays != 0)
+                {
+                    reqVoyages = reqVoyages.Where(d => d.IdDestination == idPays || d.IdDestinationNavigation.IdParente == idPays);
+
+                    if (idRegion != 0)
+                    {
+                        reqVoyages = reqVoyages.Where(d => d.IdDestination == idRegion);
+
+                    }
+                }
+            }
+
 
             //filtres par prix
             if (minPrice != 0 || maxPrice != 0)
                 reqVoyages = reqVoyages.Where(p => p.PrixHt <= maxPrice && p.PrixHt >= minPrice);
 
             //filtres par date de départ
-            if (dateMin != DateTime.MinValue || dateMax != DateTime.MinValue)
+            if (dateMin != DateTime.Today || dateMax != DateTime.Today.AddDays(7))
                 reqVoyages = reqVoyages.Where(d => d.DateDepart >= dateMin && d.DateDepart <= dateMax);
 
-            var listeVoyages = await reqVoyages.AsNoTracking().ToListAsync();
+            //   var listeVoyages = await reqVoyages.AsNoTracking().ToListAsync();
+
+            var listeVoyages = await PageItems<Voyage>.CreateAsync(
+          reqVoyages.AsNoTracking(), page, 15);
 
             return View(listeVoyages);
         }

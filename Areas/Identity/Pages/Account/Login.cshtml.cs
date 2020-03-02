@@ -44,13 +44,15 @@ namespace Bo_Voyage_Final.Areas.Identity.Pages.Account
         {
             [Required]
             [EmailAddress]
+            [Display(Name = "Adresse e-mail")]
             public string Email { get; set; }
 
             [Required]
+            [Display(Name = "Mot de passe")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Rester connecté?")]
             public bool RememberMe { get; set; }
         }
 

@@ -23,12 +23,12 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
         }
 
         // GET: Client/Voyages
-        public async Task<IActionResult> Index(int IdDestination, int idCont, int idPays, int idRegion, decimal minPrice, decimal maxPrice, DateTime dateMin, DateTime dateMax, int page = 1)
+        public async Task<IActionResult> Index( int idCont, int idPays, int idRegion, decimal minPrice, decimal maxPrice, DateTime dateMin, DateTime dateMax, int page = 1)
         {
             //Rq pour import des destinations dans la liste déroulante
             ViewBag.Destinations = _context.Destination.AsNoTracking().ToList();
             //Memo des valeurs des filtres en cours
-            ViewData["idDestination"] = IdDestination;
+   
             ViewBag.MinPrice = minPrice;
             ViewBag.MaxPrice = maxPrice;
 
@@ -58,19 +58,16 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             IQueryable<Voyage> reqVoyages = _context.Voyage.Where(v => v.PlacesDispo > 0).Include(v => v.IdDestinationNavigation).ThenInclude(e => e.Photo)
                 .OrderBy(e => e.IdDestinationNavigation.Nom);
 
-            if (IdDestination != 0)
-                //Application du filtre Sur les destinations
-                reqVoyages = reqVoyages.Where(d => d.IdDestination == IdDestination);
 
             //////////////////////////////////////////////////////////
             ViewBag.Continent = _context.Destination.Where(d => d.Niveau == 1).AsNoTracking().ToList();
             ViewData["idCont"] = idCont;
 
 
-            ViewBag.Pays = _context.Destination.Where(d => d.Niveau == 2 ).AsNoTracking().ToList();
+            ViewBag.Pays = _context.Destination.Where(d => d.Niveau == 2 && d.IdParente==idCont).AsNoTracking().ToList();
             ViewData["IdPays"] = idPays;
 
-            ViewBag.Region = _context.Destination.Where(d => d.Niveau == 3 ).AsNoTracking().ToList();
+            ViewBag.Region = _context.Destination.Where(d => d.Niveau == 3 && d.IdParente==idPays).AsNoTracking().ToList();
             ViewData["IdRegion"] = idRegion;
 
 
@@ -78,29 +75,55 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             if (idCont != 0)
             {  //Application du filtre Sur les continents
 
-                /*  var req2 = reqVoyages.Where(d => (d.IdDestination != idCont && d.IdDestinationNavigation.Niveau == 1));
-                  req2 = req2.Where((d => d.IdDestinationNavigation.IdParente != idCont && d.IdDestinationNavigation.Niveau == 2));
-                req2 = req2.Where(d => d.IdDestinationNavigation.IdParente != d.IdDestination);
 
 
-                  reqVoyages = reqVoyages.Except(req2);
-                    */
-                // reqVoyages.Where((d => (d.IdDestination == idCont ) || (d.IdDestinationNavigation.IdParente == idCont ) ));
-                // reqVoyages = reqVoyages.Where(d => (d.IdDestinationNavigation.Niveau == 1 || d.IdDestinationNavigation.Niveau == 2 || (d.IdDestinationNavigation.Niveau == 3 && d.IdDestinationNavigation.IdParente != d.IdDestination)));
-                reqVoyages = reqVoyages.Where(d => d.IdDestination == idCont);
+                //recuperation de la liste des iddestination des region de l'id du continent
+                var req2 = reqVoyages.Where(d => d.IdDestinationNavigation.IdParente == idCont).ToList();
+                var req3 = reqVoyages.Where(d => d.IdDestinationNavigation.Niveau == 3).ToList();
+                List<int> idRegional = new List<int>();
+
+                foreach (var voy3 in req3)
+                {
+                    foreach (var voy2 in req2)
+                    {
+                        if (voy3.IdDestinationNavigation.Niveau == 3 && voy3.IdDestinationNavigation.IdParente == voy2.IdDestination)
+                        {
+                            idRegional.Add(voy3.Id);
+                        }
+                    }
+                }
+
+                // req 4 = toutes les regions
+                var req4 = reqVoyages.Where(d => d.IdDestinationNavigation.Niveau == 3);
+
+
+
+                // reqvoyages contients les voyages du continent et pays concernés
+                reqVoyages = reqVoyages.Where(d => (d.IdDestination == idCont) || (d.IdDestinationNavigation.IdParente == idCont));
+
+                //pour chaque id de la liste idRegional, req 5 recupère un voyage dans les regions,
+                //puis fusionne cette valeur à reqVoyage
+                foreach (var identifiant in idRegional)
+                {
+                    var req5 = req4.Where(a => a.Id == identifiant);
+                    reqVoyages = reqVoyages.Union(req5);
+                }
+
+
+                //filtre pays, dépendant du conitnent
+                if (idPays != 0)
+                {
+                    reqVoyages = reqVoyages.Where(d => d.IdDestination == idPays || d.IdDestinationNavigation.IdParente==idPays) ;
+
+                    if (idRegion != 0)
+                    {
+                        reqVoyages = reqVoyages.Where(d => d.IdDestination == idRegion);
+
+                    }
+                }
             }
 
 
-            if (idPays != 0)
-            {
-                reqVoyages = reqVoyages.Where(d => d.IdDestination == idPays);
-            }
-
-            if (idRegion != 0)
-            {
-                reqVoyages = reqVoyages.Where(d => d.IdDestination == idRegion);
-
-            }
 
 
 

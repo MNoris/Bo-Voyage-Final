@@ -6,30 +6,30 @@
     }
 
 
-    <h1>Liste des voyages</h1>
-
 <div>
 
     <partial name="_FilterVoyageVuePartielle" />
 
 </div>
 
-    <div class="row justify-content-center">
+    <span class="row justify-content-center">
 
         @foreach (var item in Model)
         {
-            <div class="bg-info rounded m-1 text-center col-3">
+            <div class="bg-info rounded m-1 text-center ">
                 <partial name="_cardVoyageVuePartielle" model="@item" />
                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Plus de details</a>
             </div>
         }
-    </div>
+    </span>
 
 
     @{
         var etatPrecedent = !Model.HasPreviousPage ? "disabled" : "";
         var etatsuivant = !Model.HasNextPage ? "disabled" : "";
     }
+@if (Model.TotalPages>1)
+{
 
     <div class="row justify-content-center">
         <a asp-area="Client"
@@ -63,5 +63,6 @@
             Suivant
         </a>
     </div>
+}
 
 

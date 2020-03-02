@@ -21,7 +21,7 @@ namespace Bo_Voyage_Final.Areas.Identity.Pages.Account.Manage
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
+        [Display(Name = "Identifiant")]
         public string Username { get; set; }
 
         [TempData]
@@ -33,7 +33,7 @@ namespace Bo_Voyage_Final.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Numéro de téléphone")]
             public string PhoneNumber { get; set; }
         }
 

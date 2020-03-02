@@ -10,11 +10,11 @@ go
 
 insert into Destination(Nom, Niveau, Description)
 values
-('Europe ', 1, 'Terre des rois de naguère.'),
-('Afrique ', 1, 'De Casablanca à Pretoria'),
-('Oceanie ', 1, 'Les plus grands archipels à votre portée.'),
-('Asie ', 1, 'De la Chine au Japon, en passant par le Tibet.'),
-('Amerique ', 1, 'A la découverte du nouveau-monde.')
+('Europe', 1, 'Terre des rois de naguère.'),
+('Afrique', 1, 'De Casablanca à Pretoria'),
+('Oceanie', 1, 'Les plus grands archipels à votre portée.'),
+('Asie', 1, 'De la Chine au Japon, en passant par le Tibet.'),
+('Amerique', 1, 'A la découverte du nouveau-monde.')
 go
 
 
@@ -43,7 +43,7 @@ go
 
 insert into Destination(Nom, Niveau,IdParente, Description)
 values
-('Bretagne ', 3, 6, 'Superbe région. Terre de légendes. De nombreux spots pour le surf et le kitesurf.'),
+('Bretagne', 3, 6, 'Superbe région. Terre de légendes. De nombreux spots pour le surf et le kitesurf.'),
 ('Guadeloupe', 3, 6,'Dans un site exceptionnel,en bordure d''un petit lagon turquoise, tout est réuni pour un séjour paradisiaque. Découvrez les merveilles de grande terre et de basse terre, les joies des plongées dans la réserve naturelle.'),
 ('Hokkaido', 3, 11,''),
 ('belo horizonte', 3, 12,''),
@@ -56,16 +56,44 @@ go
 
 
 insert into Photo(NomFichier , IdDestination)
-values ('/Images/birmanie_1.jpg', 7),
+values 
+('/Images/europe.jpg', 1),
+('/Images/afrique.jpg', 2),
+('/Images/Oceanie.jpg', 3),
+('/Images/Asie.jpg', 4),
+('/Images/Amerique.jpg', 5),
+('/Images/france_1.jpg', 6),
+('/Images/birmanie_1.jpg', 7),
 ('/Images/birmanie_2.jpg', 7),
 ('/Images/birmanie_3.jpg', 7),
-('/Images/bretagne_1.jpg', 23),
 ('/Images/canada_1.jpg', 8),
 ('/Images/canada_2.jpg', 8),
+('/Images/Etats_unis.jpg', 9),
+('/Images/chine.jpg', 10),
+('/Images/japon.jpg', 11),
+('/Images/Bresil.jpg', 12),
+('/Images/VietNam.jpg', 13),
+('/Images/russie.jpg', 14),
+('/Images/perou.jpg', 15),
+('/Images/autriche.jpg', 16),
+('/Images/Mexique.jpg', 17),
+('/Images/Italie.jpg', 18),
+('/Images/AfriqueDuSud.jpg', 19),
+('/Images/Senegal.jpg', 20),
+('/Images/Tunisie.jpg', 21),
+('/Images/Australie.jpg', 22),
+('/Images/bretagne_1.jpg', 23),
 ('/Images/guadeloupe_1.jpg', 24),
 ('/Images/guadeloupe_2.jpg', 24),
+('/Images/Hokkaido.jpg', 25),
+('/Images/BeloHorizonte.jpg', 26),
+('/Images/Toscane.jpg', 27),
+('/Images/Kwazulu.jpg', 28),
+('/Images/Quebec.jpg', 29),
+('/Images/californie.jpg', 30),
 ('/Images/saint-barth_1.jpg', 31),
 ('/Images/saint-barth_2.jpg', 31)
+
 
 go
 
