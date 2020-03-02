@@ -1,58 +1,86 @@
-﻿@model Dictionary<int,List<Bo_Voyage_Final.Models.Voyage>>
+﻿@model Dictionary<int, List<Bo_Voyage_Final.Models.Voyage>>
 
 
-    @{
-        ViewBag.Title = "BoVoyage";
-        ViewBag.Bg = "/Images/voyage1.jpg";
-    }
+@{
+    ViewBag.Title = "Nos tops";
+    ViewBag.Bg = "/Images/voyage1.jpg";
+}
 
-@{ 
+
+
+
+
+
+<div class="container-fluid ">
+    <div class="row d-flex justify-content-center ">
+        <div class="col-10">
+
+            <div class="jumbotron jumbotron-fluid text-light" style=" background-image: url(@ViewBag.Bg)">
+                <h1 class="display-4 text-center" style="font-weight:bold">BoVoyage</h1>
+                <p class="lead text-center" style="font-weight:bold">Des voyages à prix cassé!</p>
+                </br>
+                </br>
+                </br>
+                </br>
+                </br>
+                <hr class="my-4">
+                <p>Visionnez la rubrique "A propos" ou cliquez sur le bouton ci-dessous pour obtenir plus d'informations.</p>
+                <p class="lead">
+                    <a class="btn btn-primary btn-lg" href="#" role="button">En savoir plus</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@{
     List<string> Libelle = new List<string>()
-    {
-              "Voyages les moins chers" ,
-              "Voyages au départ iminent",
-              "Voyages pour les pays les plus visités"
+{
+              "Petits prix" ,
+              "Départs iminents",
+              "Destinations les plus visitées"
     };
 }
-    <div class="text-center container container-fluid" style="max-width=100%;background-image: url(@ViewBag.Bg);
-                                heigth:100%;
-                                background-position: center;
-                                background-repeat: no-repeat;
-                                background-size: cover">
+<div class="text-center  container-fluid bg-light">
 
-        <h1 class="display-4 font-italic font-weight-bold text-white">@ViewBag.Title</h1>
+    <h1 class="display-4 font-italic font-weight-bold text-dark">@ViewBag.Title</h1>
 
 
-        <div class="container row">
-            @foreach (var item in Model)
-            {
-                <div class="col-4">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Libelle[item.Key]
-                                    @*@Html.DisplayFor(model => item.Key)*@
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var voyage in item.Value)
-                            {
+    <div class="container">
+        <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-4">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <div class="bg-light rounded m-1 text-center">
-                                        <partial name="_cardVoyageVuePartielle" model="@voyage" />
-                                        <a asp-area="Client"asp-controller="Voyages"asp-action="Details" asp-route-id="@voyage.Id" class="btn btn-primary">Plus de details</a>
-                                        </div>
-                                    </td>
+                                    <th>
+                                        @Libelle[item.Key]
+                                        @*@Html.DisplayFor(model => item.Key)*@
+                                    </th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
+                            </thead>
+                            <tbody>
+                                @foreach (var voyage in item.Value)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="bg-info rounded m-1 text-center " style="width:100%">
+                                                <partial name="_cardVoyageVuePartielle" model="@voyage" />
+                                                <a asp-area="Client" asp-controller="Voyages" asp-action="Details" asp-route-id="@voyage.Id" class="btn btn-primary">Plus de details</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+           
         </div>
-
-
     </div>
+
+</div>

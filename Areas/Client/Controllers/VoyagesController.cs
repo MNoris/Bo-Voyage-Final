@@ -79,7 +79,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                     foreach (var voy2 in req2)
                     {
                         if (voy3.IdDestinationNavigation.Niveau == 3 && voy3.IdDestinationNavigation.IdParente == voy2.IdDestination)
-                        {
+                        { 
                             idRegional.Add(voy3.Id);
                         }
                     }

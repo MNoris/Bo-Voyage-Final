@@ -14,8 +14,8 @@
 }
 
 <span class="col-4" >
-    <div class="card" >
-        <img class="card-img-top" src="@Model.IdDestinationNavigation.Photo.FirstOrDefault().NomFichier" alt="...">
+    <div class="card" style="height:500px" >
+        <img class="card-img-top" style="height:280px" src="@Model.IdDestinationNavigation.Photo.FirstOrDefault().NomFichier" alt="...">
         <div class="card-body">
             <h5 class="card-title">@Html.DisplayFor(modelItem => Model.IdDestinationNavigation.Nom)</h5>
             <p class="card-text text-center">

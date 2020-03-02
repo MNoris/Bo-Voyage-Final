@@ -7,75 +7,95 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Tableau de bord</h1>
+<div class="d-flex justify-content-center">
+    <h1>Tableau de bord</h1>
 
-
-<h2>Liste des dossiers de réservation en cours</h2>
-
-
-
-
-<div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.listeDossierResaEnCours.First().Id)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.listeDossierResaEnCours.First().IdClient)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.listeDossierResaEnCours.First().IdEtatDossier)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.listeDossierResaEnCours.First().IdVoyage)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.listeDossierResaEnCours)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IdClient)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IdEtatDossier)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IdVoyage)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
 </div>
+<br />
+<br />
 
+<div class="container-fluid bg-light">
+    <div class="row d-flex justify-content-center ">
+        <div class="col-11">
+            <div class="d-flex justify-content-center">
 
+                <h2>Liste des dossiers de réservation en cours</h2>
 
-<div>
-
-    <form asp-controller="Home" asp-action="Index" method="get">
-        <p>
-            <label class="font-weight-bold h3">Voyages par nombre de jours :</label>
-            <input type="number" name="nbJours" value="@ViewBag.NbJours">
-            <input type="submit" value="Filter" />
-        </p>
-    </form>
-    <h2>Liste des voyages disponibles dont le départ est dans moins de @ViewBag.NbJours jours</h2>
-
-    <span class="row">
-        @foreach (var item in Model.listeVoyageImminent)
-        {
-            <div class="bg-info rounded m-1 text-center">
-            <partial name="_cardVoyageVuePartielle" model="@item" />
-            <a asp-controller="Voyages" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Plus de details</a>
             </div>
-        }
-    </span>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.listeDossierResaEnCours.First().Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.listeDossierResaEnCours.First().IdClient)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.listeDossierResaEnCours.First().IdEtatDossier)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.listeDossierResaEnCours.First().IdVoyage)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.listeDossierResaEnCours)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdClient)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdEtatDossier)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdVoyage)
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+<br />
+<br />
+
+<div class="container-fluid bg-light">
+    <div class="row d-flex justify-content-center ">
+        <div class="col-12">
+            <div class="d-flex justify-content-center ">
+                <h2>Liste des voyages disponibles dont le départ est dans moins de @ViewBag.NbJours jours</h2>
+            </div>
+            <div class="row d-flex justify-content-center ">
+                <div class="col-12">
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <p>
+                            <label class="h4">Nombre de jours :</label>
+                            <input type="number" name="nbJours" value="@ViewBag.NbJours">
+                            <input type="submit" value="Filter" />
+                        </p>
+                    </form>
+
+                    <span class="row d-flex justify-content-center ">
+                        @foreach (var item in Model.listeVoyageImminent)
+                        {
+                            <div class="bg-info rounded m-1 text-center " style="width:18%">
+                                <partial name="_cardVoyageVuePartielle" model="@item" />
+                                <a asp-controller="Voyages" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Plus de details</a>
+                            </div>
+                        }
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        

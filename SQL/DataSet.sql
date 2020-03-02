@@ -54,7 +54,6 @@ values
 ('Saint-Barthélémy', 3,6,'Imaginez une île où il fait 26 à 28 °C toute l''année. Baignez vous dans une eau turquoise.')
 go
 
-
 insert into Photo(NomFichier , IdDestination)
 values 
 ('/Images/europe.jpg', 1),
