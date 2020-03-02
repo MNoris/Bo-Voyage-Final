@@ -211,9 +211,6 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                 client.Client = new Models.Client { Id = idPersonne };
             }
             var voyage = _context.Voyage.Include(v => v.IdDestinationNavigation).FirstOrDefault(v => v.Id == idVoyage);
-
-            var pv = new PersonneVoyage(client, voyage);
-
             var price = voyage.PrixHt;
 
             foreach (var item in voyageurs)
@@ -227,13 +224,17 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                     item.Datenaissance ??= null;
                     item.Telephone ??= null;
 
-                    client.Voyageur.Add(new Voyageur() { Id = item.Id, Idvoyage = idVoyage });
+                    _context.Personne.Add(item);
+                    _context.SaveChanges();
+                    Voyageur voyageur = new Voyageur() { Id = item.Id, Idvoyage = idVoyage };
+                    _context.Voyageur.Add(voyageur);
+                    _context.SaveChanges();
                 }
                 else
                 {
                     var voyageur = _context.Personne.Where(p => p.Email == item.Email).FirstOrDefault();
-                    client.Voyageur.Add(new Voyageur() { Id = voyageur.Id, Idvoyage = idVoyage });
-                    voyageurs.Remove(item);
+                    _context.Voyageur.Add(new Voyageur() { Id = voyageur.Id, Idvoyage = idVoyage });
+                    _context.SaveChanges();
                 }
 
                 if (item.Datenaissance != null)
@@ -260,8 +261,8 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             try
             {
                 _context.Personne.Update(client);
-                _context.Personne.AddRange(voyageurs);
-                //_context.SaveChanges();
+                //_context.Personne.AddRange(voyageurs);
+                _context.SaveChanges();
             }
             catch (Exception e)
             {
@@ -290,7 +291,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                 throw e;
             }
 
-            return View("../Personnes/MesReservations");
+            return RedirectToAction("Index", "Dossierresas");
         }
 
         //[HttpPost]
