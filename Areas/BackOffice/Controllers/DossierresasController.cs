@@ -28,6 +28,16 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
                                   .Include(d => d.IdVoyageNavigation)
                                   .Include(d => d.IdVoyageNavigation.Voyageur)
                                   .Include(d => d.IdVoyageNavigation.IdDestinationNavigation);
+
+
+
+
+
+
+
+
+
+
             return View(await boVoyageContext.ToListAsync());
         }
 
