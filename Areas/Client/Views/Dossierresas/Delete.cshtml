@@ -1,0 +1,59 @@
+﻿@model Bo_Voyage_Final.Models.Dossierresa
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div>
+    <h1>Supprission d'un voyage</h1>
+
+</div>
+<div>
+    <h4>Dossierresa</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            Nombre des voyageurs
+        </dt>
+        <dd class="col-sm-10">
+            @Model.IdVoyageNavigation.Voyageur.Count
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdVoyageNavigation.IdDestinationNavigation.Nom)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.IdVoyageNavigation.IdDestinationNavigation.Nom
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PrixTotal)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PrixTotal)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdEtatDossierNavigation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdEtatDossierNavigation.Libelle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdVoyageNavigation.Descriptif)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdVoyageNavigation.Descriptif)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Supprimer" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-outline-info">Retour à la liste</a>
+    </form>
+</div>
