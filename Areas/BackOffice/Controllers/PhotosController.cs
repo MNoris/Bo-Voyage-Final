@@ -11,7 +11,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
-{ 
+{
     [Area("BackOffice")]
     public class PhotosController : Controller
     {
@@ -20,7 +20,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         private readonly IHostingEnvironment _env;
 
         [Obsolete]
-        public PhotosController(BoVoyageContext context,IHostingEnvironment environment)
+        public PhotosController(BoVoyageContext context, IHostingEnvironment environment)
         {
             _context = context;
             _env = environment;
@@ -55,31 +55,49 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         // GET: BackOffice/Photos/Create
         public IActionResult Create(int id)
         {
-            ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom",id);
+            ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom", id);
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Obsolete]
-        public  async Task<IActionResult> Create(IFormFile file, [Bind("Id,NomFichier,IdDestination")] Photo photo)
+        public async Task<IActionResult> Create(List<IFormFile> files, [Bind("NomFichier,IdDestination")] Photo photo)
         {
-            
+
             if (ModelState.IsValid)
             {
-                var imagesPath = "/Images/";
-                var uploadPath = _env.WebRootPath + imagesPath;
-                var nomImage = Path.GetFileName(Guid.NewGuid().ToString() + "." + file.FileName.Split(".")[1]);
-                string fullPath = uploadPath + nomImage;
-                using var fileStreamer = new FileStream(fullPath, FileMode.Create);
-                await file.CopyToAsync(fileStreamer);
+                string imagesPath = "/Images/";
+                string nomFichier = photo.NomFichier;
+                for (int i = 0; i < files.Count(); i++)
+                {
+                    var img = files[i];
+                    var imgTemp = new Photo();
 
-                photo.NomFichier = imagesPath + nomImage;
-                _context.Add(photo);
-                await _context.SaveChangesAsync();
-                return View("PhotoLoaded");
+                    var nomImage = string.Empty;
+                    var uploadPath = _env.WebRootPath + imagesPath;
+                    if (!string.IsNullOrEmpty(nomFichier))
+                    {
+                        nomImage = Path.GetFileName(nomFichier + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString() + "." + img.FileName.Split(".")[1]);
+                    }
+                    else
+                    {
+                        nomImage = Path.GetFileName(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString() + "." + img.FileName.Split(".")[1]);
+                    }
+                    string fullPath = uploadPath + nomImage;
+                    using var fileStreamer = new FileStream(fullPath, FileMode.Create);
+                    await img.CopyToAsync(fileStreamer);
 
+                    imgTemp.NomFichier = imagesPath + nomImage;
+                    imgTemp.IdDestination = photo.IdDestination;
+                    _context.Add(imgTemp);
+                    await _context.SaveChangesAsync();
+                }
+                if (ModelState.IsValid)
+                {
+                    return View("PhotoLoaded");
 
+                }
             }
             return View();
         }
