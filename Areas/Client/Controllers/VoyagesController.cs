@@ -79,7 +79,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                     foreach (var voy2 in req2)
                     {
                         if (voy3.IdDestinationNavigation.Niveau == 3 && voy3.IdDestinationNavigation.IdParente == voy2.IdDestination)
-                        { 
+                        {
                             idRegional.Add(voy3.Id);
                         }
                     }
@@ -204,8 +204,12 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
         {
             //TODO comments & errors
             var client = _context.Personne.Find(idPersonne);
-            client.TypePers = 1;
-            client.Client = new Models.Client { Id = idPersonne };
+
+            if (!_context.Client.Any(c => c.Id == idPersonne))
+            {
+                client.TypePers = 1;
+                client.Client = new Models.Client { Id = idPersonne };
+            }
             var voyage = _context.Voyage.Include(v => v.IdDestinationNavigation).FirstOrDefault(v => v.Id == idVoyage);
 
             var pv = new PersonneVoyage(client, voyage);
@@ -214,11 +218,23 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
             foreach (var item in voyageurs)
             {
-                item.Civilite = "";
-                item.Nom = "";
-                item.Prenom = "";
-                item.TypePers = 2;
-                item.Datenaissance ??= null;
+                if (!_context.Personne.Where(p => p.Email == item.Email).Any())
+                {
+                    item.Civilite = "";
+                    item.Nom = "";
+                    item.Prenom = "";
+                    item.TypePers = 2;
+                    item.Datenaissance ??= null;
+                    item.Telephone ??= null;
+
+                    client.Voyageur.Add(new Voyageur() { Id = item.Id, Idvoyage = idVoyage });
+                }
+                else
+                {
+                    var voyageur = _context.Personne.Where(p => p.Email == item.Email).FirstOrDefault();
+                    client.Voyageur.Add(new Voyageur() { Id = voyageur.Id, Idvoyage = idVoyage });
+                    voyageurs.Remove(item);
+                }
 
                 if (item.Datenaissance != null)
                 {
@@ -230,8 +246,6 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                 }
                 else
                     price += voyage.PrixHt;
-
-                client.Voyageur.Add(new Voyageur() { Id = item.Id, Idvoyage = idVoyage });
             }
 
             var dossierRes = new Dossierresa
@@ -246,7 +260,8 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             try
             {
                 _context.Personne.Update(client);
-                _context.SaveChanges();
+                _context.Personne.AddRange(voyageurs);
+                //_context.SaveChanges();
             }
             catch (Exception e)
             {
@@ -258,17 +273,11 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
         }
 
         [HttpPost]
-        public IActionResult EnregistrerResa(string numeroCb, decimal prixTotal, int idPersonne, int idVoyage)
+        public IActionResult EnregistrerResa([Bind("NumeroCb", "PrixTotal", "IdClient", "IdVoyage")] Dossierresa dossier)
         {
             //TODO comments & errors
-            var dossier = new Dossierresa
-            {
-                IdClient = idPersonne,
-                IdEtatDossier = 1,
-                IdVoyage = idVoyage,
-                PrixTotal = prixTotal,
-                NumeroCb = numeroCb
-            };
+
+            dossier.IdEtatDossier = 1;
 
             try
             {

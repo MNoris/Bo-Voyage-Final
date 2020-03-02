@@ -6,21 +6,21 @@
 
 <h1>Payer</h1>
 
-<form>
+<h4>Dossierresa</h4>
+<hr />
+<form asp-action="EnregistrerResa">
     <div>
-        <h4>Dossierresa</h4>
-        <hr />
         <div class="form-group">
             <label asp-for="NumeroCb" class="control-label"></label>
-            <input asp-for="NumeroCb" name="numeroCb" class="form-control" />
+            <input asp-for="NumeroCb" name="NumeroCb" class="form-control" />
             <span asp-validation-for="NumeroCb" class="text-danger"></span>
         </div>
         <div class="col-sm-2">
             <label asp-for="PrixTotal" class="control-label"></label>
-            <input asp-for="PrixTotal" name="prixTotal" class="form-control" disabled />
+            <input asp-for="PrixTotal" name="PrixTotal" class="form-control" readonly />
         </div>
-        <input type="hidden" name="idPersonne" value="@Model.IdClient" />
-        <input type="hidden" name="idVoyage" value="@Model.IdVoyage" />
+        <input type="hidden" name="IdClient" value="@Model.IdClient" />
+        <input type="hidden" name="IdVoyage" value="@Model.IdVoyage" />
         <input type="submit" value="Valider" />
     </div>
 </form>
