@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bo_Voyage_Final.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
 {
     [Area("BackOffice")]
+    [Authorize(Roles = "Admin")]
     public class VoyagesController : Controller
     {
         private readonly BoVoyageContext _context;

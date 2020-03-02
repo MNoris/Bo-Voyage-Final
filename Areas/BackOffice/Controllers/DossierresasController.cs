@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bo_Voyage_Final.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
 {
     [Area("BackOffice")]
+    [Authorize(Roles = "Admin")]
     public class DossierresasController : Controller
     {
         private readonly BoVoyageContext _context;

@@ -9,10 +9,12 @@ using Bo_Voyage_Final.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
 {
     [Area("BackOffice")]
+    [Authorize(Roles = "Admin")]
     public class PhotosController : Controller
     {
         private readonly BoVoyageContext _context;
