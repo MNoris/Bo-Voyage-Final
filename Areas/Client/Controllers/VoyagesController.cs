@@ -133,7 +133,10 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
         public async Task<IActionResult> ListeDestinationVoyage(int id)
         {
-            var listeVoyages =  _context.Voyage.Include(v => v.IdDestinationNavigation).ThenInclude(d => d.Photo).Where(v => v.IdDestination == id);
+            var listeVoyages =  _context.Voyage
+                                .Include(v => v.IdDestinationNavigation)
+                                .ThenInclude(d => d.Photo)
+                                .Where(v => v.IdDestination == id && v.PlacesDispo>0);
 
 
             var voyage = listeVoyages.FirstOrDefault();

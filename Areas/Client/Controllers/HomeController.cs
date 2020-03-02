@@ -39,10 +39,12 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
             List<Voyage> list5MoinsCher = _context.Voyage.Include(v => v.IdDestinationNavigation)
                                                          .ThenInclude(d => d.Photo)
+                                                         .Where(v => v.PlacesDispo>0)
                                                          .OrderBy(v => v.PrixHt * (1 - v.Reduction)).Take(5).AsNoTracking().ToList();
             top5Voyages.Add(0, list5MoinsCher);
             List<Voyage> list5DepartIminent = _context.Voyage.Include(v => v.IdDestinationNavigation)
                                                     .ThenInclude(d => d.Photo)
+                                                    .Where(v => v.PlacesDispo > 0)
                                                     .OrderBy(v => v.DateDepart).Take(5).AsNoTracking().ToList();
             top5Voyages.Add(1, list5DepartIminent);
 
