@@ -161,10 +161,12 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
             }
 
             var dossierresa = await _context.Dossierresa
-                .Include(d => d.IdClientNavigation)
-                .Include(d => d.IdEtatDossierNavigation)
-                .Include(d => d.IdVoyageNavigation)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                      .Include(d => d.IdClientNavigation)
+                      .Include(d => d.IdEtatDossierNavigation)
+                      .Include(d => d.IdVoyageNavigation)
+                      .Include(d => d.IdVoyageNavigation.Voyageur)
+                      .Include(d => d.IdVoyageNavigation.IdDestinationNavigation)
+                      .FirstOrDefaultAsync(m => m.Id == id);
             if (dossierresa == null)
             {
                 return NotFound();
@@ -179,6 +181,13 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var dossierresa = await _context.Dossierresa.FindAsync(id);
+            if (dossierresa.IdEtatDossier == 2)//dossier Validé
+            {
+                var voyage = await _context.Voyage.Include(v => v.Voyageur).Where(v => v.Id == dossierresa.IdVoyage).FirstOrDefaultAsync();
+                voyage.PlacesDispo += 1 + voyage.Voyageur.Count();
+                _context.Update(voyage);
+            }
+
             _context.Dossierresa.Remove(dossierresa);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
