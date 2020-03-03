@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bo_Voyage_Final.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 
 namespace Bo_Voyage_Final.Areas.Client.Controllers
 {
@@ -133,10 +134,10 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
         public async Task<IActionResult> ListeDestinationVoyage(int id)
         {
-            var listeVoyages =  _context.Voyage
+            var listeVoyages = _context.Voyage
                                 .Include(v => v.IdDestinationNavigation)
                                 .ThenInclude(d => d.Photo)
-                                .Where(v => v.IdDestination == id && v.PlacesDispo>0);
+                                .Where(v => v.IdDestination == id && v.PlacesDispo > 0);
 
 
             var voyage = listeVoyages.FirstOrDefault();
@@ -205,19 +206,29 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
         [HttpPost]
         public IActionResult Payer(int idPersonne, int idVoyage, [Bind("Email", "Telephone", "Datenaissance")]List<Personne> voyageurs)
         {
-            //TODO comments & errors
+            //Récupération de la personne
             var client = _context.Personne.Find(idPersonne);
 
+            //Vérifie si la personne qui effectue une réservation est déjà enregistrée en tant que Client ou non
             if (!_context.Client.Any(c => c.Id == idPersonne))
             {
                 client.TypePers = 1;
                 client.Client = new Models.Client { Id = idPersonne };
             }
+
+            //Récupération du voyage à réserver
             var voyage = _context.Voyage.Include(v => v.IdDestinationNavigation).FirstOrDefault(v => v.Id == idVoyage);
+
             var price = voyage.PrixHt;
 
             foreach (var item in voyageurs)
             {
+                //Vérifie que l'adresse mail de chaque voyageur est différente de celle du client
+                if (item.Email == client.Email)
+                {
+                    return BadRequest($"L'adresse mail {item.Email} est déjà utilisée par le client, merci d'utiliser une adresse mail différente.");
+                }
+
                 if (!_context.Personne.Where(p => p.Email == item.Email).Any())
                 {
                     item.Civilite = "";
@@ -227,17 +238,36 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                     item.Datenaissance ??= null;
                     item.Telephone ??= null;
 
-                    _context.Personne.Add(item);
-                    _context.SaveChanges();
+                    try
+                    {
+                        //Enregistre la personne dans un premier temps, afin de pouvoir récupérer son ID et l'assigner en tant que voyageur
+                        _context.Personne.Add(item);
+                        _context.SaveChanges();
+                    }
+                    catch (DbUpdateException dbue)
+                    {
+                        var sqle = (SqlException)dbue.InnerException;
+
+                        //Vérifie si l'erreur reçue a pour numéro 515, et renvoie un message associé
+                        if (sqle.Number == 515)
+                        {
+                            return BadRequest("L'adresse email doit être renseignée et unique pour tous les voyageurs.");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        return BadRequest("Une erreur innatendue est survenue. Merci de rééssayer.");
+                    }
+
+                    //Instancie le voyageur et sauvegarde sa liaison
                     Voyageur voyageur = new Voyageur() { Id = item.Id, Idvoyage = idVoyage };
                     _context.Voyageur.Add(voyageur);
-                    _context.SaveChanges();
                 }
                 else
                 {
+                    //Si le voyageur existe déjà en base, l'associe au voyage, au lieu de créer un nouveau voyageur, basé sur son adresse email
                     var voyageur = _context.Personne.Where(p => p.Email == item.Email).FirstOrDefault();
                     _context.Voyageur.Add(new Voyageur() { Id = voyageur.Id, Idvoyage = idVoyage });
-                    _context.SaveChanges();
                 }
 
                 if (item.Datenaissance != null)
@@ -247,12 +277,13 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
                     // Réduc enfant
                     if (age <= 12)
-                        price += voyage.PrixHt * (1 - voyage.Reduction) * (decimal)0.40;
+                        price += voyage.PrixHt * (decimal)0.40;
                 }
                 else
-                    price += voyage.PrixHt * (1 - voyage.Reduction);
+                    price += voyage.PrixHt;
             }
 
+            //Création du dossier de réservation
             var dossierRes = new Dossierresa
             {
                 IdClient = idPersonne,
@@ -265,13 +296,21 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             try
             {
                 _context.Personne.Update(client);
-                //_context.Personne.AddRange(voyageurs);
                 _context.SaveChanges();
             }
-            catch (Exception e)
+            catch (DbUpdateException dbue)
             {
+                var sqle = (SqlException)dbue.InnerException;
 
-                throw e;
+                //Vérifie si l'erreur reçue a pour numéro 2627, et renvoie un message associé
+                if (sqle.Number == 2627)
+                {
+                    return BadRequest("Un des voyageurs participe déjà à ce voyage.");
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest("Une erreur innatendue est survenue. Merci de rééssayer.");
             }
 
             return View("Payer", dossierRes);

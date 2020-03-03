@@ -21,10 +21,12 @@
         </div>
         <input type="hidden" name="IdClient" value="@Model.IdClient" />
         <input type="hidden" name="IdVoyage" value="@Model.IdVoyage" />
-        <input type="submit" value="Valider" />
+        <br />
+        <input type="submit" value="Valider" class="btn btn-primary" />
     </div>
 </form>
+<br />
 <div>
-    <a asp-action="Reserver" asp-route-id="@Model.IdVoyage">Revenir en arrière</a> |
-    <a asp-action="Index">Retour à la liste</a>
+    <a asp-action="Reserver" asp-route-id="@Model.IdVoyage" class="btn btn-danger">Revenir en arrière</a> |
+    <a asp-action="Index" class="btn btn-success">Retour à la liste</a>
 </div>

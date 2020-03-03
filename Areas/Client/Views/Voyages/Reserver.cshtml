@@ -4,6 +4,13 @@
     ViewData["Title"] = "Reservation";
 }
 
+@{
+    int nbMaxPlaces = 10;
+    if(Model.Voyage.PlacesDispo < 10)
+    {
+        nbMaxPlaces = Model.Voyage.PlacesDispo;
+    }
+}
 <h1>Reservation</h1>
 
 <div>
@@ -17,7 +24,7 @@
         <input type="hidden" name="idPersonne" value="@Model.Personne.Id" />
         <input type="hidden" name="idVoyage" value="@Model.Voyage.Id" />
         <label for="nbVoyageurs">Nombre d'accompagnateurs</label>
-        <input type="number" name="nbVoyageurs" value="0" max="@Model.Voyage.PlacesDispo" />
+        <input type="number" name="nbVoyageurs" value="0" max="@nbMaxPlaces" />
         <input type="submit" />
     </form>
     <hr />
@@ -27,18 +34,38 @@
         @for (int i = 0; i < Model.Voyageurs.Count(); i++)
         {
             <div class="row">
-                <input asp-for="@Model.Voyageurs[i].Email" class="col-sm-3" />
-                <input asp-for="@Model.Voyageurs[i].Telephone" class="col-sm-3" />
-                <input asp-for="@Model.Voyageurs[i].Datenaissance" class="col-sm-3" />
+                <div class="col-sm-3">
+                    <label for="Email">Email* : </label>
+                    <input asp-for="@Model.Voyageurs[i].Email" />
+                    <span asp-validation-for="@Model.Voyageurs[i].Email" class="text-danger"></span>
+                </div>
+                <div class="col-sm-4">
+                    <label for="Telephone">Telephone : </label>
+                    <input asp-for="@Model.Voyageurs[i].Telephone" />
+                    <span asp-validation-for="@Model.Voyageurs[i].Telephone" class="text-danger"></span>
+                </div>
+                <div class="col-sm-4">
+                    <label for="Datenaissance">Date de naissance : </label>
+                    <input asp-for="@Model.Voyageurs[i].Datenaissance" />
+                    <span asp-validation-for="@Model.Voyageurs[i].Datenaissance" class="text-danger"></span>
+                </div>
             </div>
         }
-        <input type="submit" value="Suivant" />
+        <div>
+            <label for="assurance">Assurance annulation : </label>
+            <input type="checkbox" value="assurance" name="assurance"/>
+        </div>
+        <input type="submit" value="Suivant" class="btn btn-primary"/>
     </form>
 </div>
+<hr />
 <div>
     <p>
         @((Model.Voyageurs.Count > 0 ? $"{Model.Voyageurs.Count + 1} Voyageurs." : "1 Voyageur.") +
-     $" Prix par voyageur : {Model.Voyage.PrixHt}€ HT. Une réduction de {Model.Voyage.Reduction * 100}% sera appliquée pour les enfants de moins de 12 ans.")
+     $" Prix par voyageur : {Model.Voyage.PrixHt}€ HT, incluant une réduction de {Model.Voyage.Reduction * 100}%. ")
+    </p>
+    <p>
+        Une réduction additionnelle de 60% sera appliquée pour les enfants de moins de 12 ans.
     </p>
 </div>
 

@@ -8,7 +8,8 @@ namespace Bo_Voyage_Final.Models
     {
         [Display(Name = "Numéro de dossier")]
         public int Id { get; set; }
-        [Display(Name = "Numéro de carte bleue")]
+        [Display(Name = "Numéro de carte bleue"), Required]
+        [StringLength(16, ErrorMessage ="Veuillez entrer un numéro de carte de crédit de 16 chiffres (Sans les espaces)")]
         public string NumeroCb { get; set; }
         [Display(Name = "Prix Total")]
         public decimal PrixTotal { get; set; }

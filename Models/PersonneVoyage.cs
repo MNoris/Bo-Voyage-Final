@@ -19,6 +19,7 @@ namespace Bo_Voyage_Final.Models
             Voyageurs = new List<Personne>();
         }
 
+
         public Personne Personne { get; set; }
         public Voyage Voyage { get; set; }
         public List<Personne> Voyageurs { get; set; }

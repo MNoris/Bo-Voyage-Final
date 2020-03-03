@@ -20,7 +20,8 @@ namespace Bo_Voyage_Final.Models
         public string Nom { get; set; }
         [Display(Name = "Prénom")]
         public string Prenom { get; set; }
-        [Display(Name = "Adresse e-mail"), DataType(DataType.EmailAddress)]
+        [Display(Name = "Adresse e-mail"), DataType(DataType.EmailAddress, ErrorMessage = "L'adresse mail doit être de format xxx@xxx.xx")]
+        [Required(ErrorMessage = "L'adresse mail est obligatoire")]
         public string Email { get; set; }
         [Display(Name = "Numéro de téléphone"), DataType(DataType.PhoneNumber)]
         public string Telephone { get; set; }
