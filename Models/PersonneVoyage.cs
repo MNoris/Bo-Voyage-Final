@@ -7,10 +7,7 @@ namespace Bo_Voyage_Final.Models
 {
     public class PersonneVoyage
     {
-        public PersonneVoyage()
-        {
-
-        }
+        public PersonneVoyage() { }
 
         public PersonneVoyage(Personne personne, Voyage voyage)
         {
@@ -18,18 +15,15 @@ namespace Bo_Voyage_Final.Models
             Voyage = voyage;
             Voyageurs = new List<Personne>();
         }
-
-
         public Personne Personne { get; set; }
         public Voyage Voyage { get; set; }
         public List<Personne> Voyageurs { get; set; }
 
-        public void addVoyageur()
+        public void AddVoyageur()
         {
             Voyageurs.Add(new Personne());
         }
-
-        public void removeVoyageur()
+        public void RemoveVoyageur()
         {
             Voyageurs.RemoveAt(Voyageurs.Count());
         }

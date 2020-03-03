@@ -2,9 +2,7 @@
 
 @{
     ViewData["Title"] = "Reservation";
-}
 
-@{
     int nbMaxPlaces = 10;
     if(Model.Voyage.PlacesDispo < 10)
     {
@@ -15,7 +13,8 @@
 
 <div>
     <p>
-        @($"Réservation pour le voyage à destination de {Model.Voyage.IdDestinationNavigation.Nom}, du {Model.Voyage.DateDepart.ToShortDateString()} au {Model.Voyage.DateRetour.ToShortDateString()}.")
+        @($"Réservation pour le voyage à destination de {Model.Voyage.IdDestinationNavigation.Nom}" +
+        $", du {Model.Voyage.DateDepart.ToShortDateString()} au {Model.Voyage.DateRetour.ToShortDateString()}.")
     </p>
     <p>
         @($"\r {Model.Voyage.PlacesDispo} places disponibles")
@@ -24,7 +23,7 @@
         <input type="hidden" name="idPersonne" value="@Model.Personne.Id" />
         <input type="hidden" name="idVoyage" value="@Model.Voyage.Id" />
         <label for="nbVoyageurs">Nombre d'accompagnateurs</label>
-        <input type="number" name="nbVoyageurs" value="0" max="@nbMaxPlaces" />
+        <input type="number" name="nbVoyageurs" value="@Model.Voyageurs.Count" max="@nbMaxPlaces" />
         <input type="submit" />
     </form>
     <hr />
@@ -68,7 +67,6 @@
         Une réduction additionnelle de 60% sera appliquée pour les enfants de moins de 12 ans.
     </p>
 </div>
-
 <div>
     <a asp-action="Index">Annuler</a>
 </div>

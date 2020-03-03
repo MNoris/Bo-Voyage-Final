@@ -182,7 +182,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             catch (Exception)
             {
 
-                throw;
+                return BadRequest();
             }
         }
 
@@ -197,7 +197,7 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
 
             for (int i = 0; i < (int)nbVoyageurs; i++)
             {
-                pv.addVoyageur();
+                pv.AddVoyageur();
             }
 
             return View("Reserver", pv);
@@ -278,6 +278,8 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
                     // Réduc enfant
                     if (age <= 12)
                         price += voyage.PrixHt * (decimal)0.40;
+                    else
+                        price += voyage.PrixHt;
                 }
                 else
                     price += voyage.PrixHt;
