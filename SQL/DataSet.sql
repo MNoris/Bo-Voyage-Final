@@ -93,7 +93,6 @@ values
 ('/Images/saint-barth_1.jpg', 31),
 ('/Images/saint-barth_2.jpg', 31)
 
-
 go
 
 insert into Voyage(IdDestination, DateDepart, DateRetour, PlacesDispo, PrixHT, Reduction, Descriptif)
@@ -140,6 +139,11 @@ values (24, '2020-03-05', '2020-03-15', 10, 800.00, 0.20, 'Superbe voyage en Gua
 (29, '2020-05-04', '2020-05-10', 10, 960.00, 0.20, 'Superbe voyage au Québec - Parcours 1'),
 (30, '2020-06-04', '2020-06-09', 5, 840.00, 0.20, 'Superbe voyage en Californie - Parcours 1')
 
+Go
 
-
+insert into EtatDossier(Id, Libelle)
+values (1, 'En attente'),
+(2, 'En cours'),
+(3, 'Refusée'),
+(4, 'Acceptée')
 
