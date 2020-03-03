@@ -14,10 +14,22 @@
     if (Model.IdEtatDossierNavigation != null ||
         Model.IdVoyageNavigation.Voyageur.Count > Model.IdVoyageNavigation.PlacesDispo)
     {
-        <div class="container-fluid m-2 p-1 bg-secondary">
+        <div class="container-fluid m-2 p-1 bg-light rounded">
             <h1> Le dossier doit être refusé</h1>
-            <h2>Manque de place ou le voyage a été supprimer</h2>
+            <h2>Manque de place ou le voyage a été supprimé.</h2>
         </div>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="NumeroCb" class="form-control" />
+            <input type="hidden" asp-for="PrixTotal" class="form-control" />
+            <select asp-for="IdClient" hidden asp-items="ViewBag.IdClient"></select>
+            <select asp-for="IdVoyage" hidden asp-items="ViewBag.IdVoyage"></select>
+            <input type="hidden" asp-for="IdEtatDossier"  value="3" class="form-control" />            
+            <div class="form-group">
+                <input type="submit" value="Valider" class="btn btn-primary" />
+            </div>
+        </form>
     }
     else
     {

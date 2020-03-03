@@ -26,7 +26,7 @@ namespace Bo_Voyage_Final.Models
 
         [Display(Name = "Places disponibles")]
         [Required(ErrorMessage ="Le nombre de places doit être précisé")]
-        [Range(0,9999,ErrorMessage ="Le nombre de places doit être positif et plus grand que 1")]
+        [Range(0,9999,ErrorMessage ="Le nombre de places doit être positif et plus grand que 0")]
 
         public int PlacesDispo { get; set; }
         [Display(Name = "Prix hors-taxe par pers.")]

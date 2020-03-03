@@ -31,15 +31,6 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
                                   .Include(d => d.IdVoyageNavigation.Voyageur)
                                   .Include(d => d.IdVoyageNavigation.IdDestinationNavigation);
 
-
-
-
-
-
-
-
-
-
             return View(await boVoyageContext.ToListAsync());
         }
 
@@ -105,10 +96,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
             var dossierresa = await _context.Dossierresa
                                     .Include(d => d.IdVoyageNavigation)
                                     .ThenInclude(v => v.Voyageur)
-                                    .FirstOrDefaultAsync( d => d.Id ==id);
-
-
-
+                                    .FirstOrDefaultAsync(d => d.Id == id);
 
             if (dossierresa == null)
             {
@@ -137,6 +125,12 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
                 try
                 {
                     _context.Update(dossierresa);
+                    if (dossierresa.IdEtatDossier == 2)//dossier Validé
+                    {
+                        var voyage = await _context.Voyage.Include(v => v.Voyageur).Where(v => v.Id == dossierresa.IdVoyage).FirstOrDefaultAsync();
+                        voyage.PlacesDispo -= 1 + voyage.Voyageur.Count();
+                        _context.Update(voyage);
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

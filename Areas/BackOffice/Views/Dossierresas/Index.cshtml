@@ -28,10 +28,14 @@
                         @Html.DisplayNameFor(model => model.IdClient)
                     </th>
                     <th>
+                        Numéro du voyage
+                    </th>
+
+                    <th>
                         Destination
                     </th>
                     <th>
-                        Nombres des voyageurs
+                        Nombre de personnes
                     </th>
                     <th>
                         Départ
@@ -58,13 +62,16 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.IdClient)
                         </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdVoyage)
+                        </td>
 
                         <td>
                             @item.IdVoyageNavigation.IdDestinationNavigation.Nom
                         </td>
 
                         <td>
-                            @item.IdVoyageNavigation.Voyageur.Count
+                            @(item.IdVoyageNavigation.Voyageur.Count + 1)
                         </td>
                         <td>
                             @item.IdVoyageNavigation.DateDepart.ToString("dd/MM/yyyy")
