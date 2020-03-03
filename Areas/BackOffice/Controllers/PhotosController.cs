@@ -66,7 +66,6 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         [Obsolete]
         public async Task<IActionResult> Create(List<IFormFile> files, [Bind("NomFichier,IdDestination")] Photo photo)
         {
-
             if (ModelState.IsValid)
             {
                 string imagesPath = "/Images/";

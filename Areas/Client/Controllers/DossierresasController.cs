@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bo_Voyage_Final.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Bo_Voyage_Final.Areas.Client.Controllers
 {
@@ -13,22 +14,29 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
     public class DossierresasController : Controller
     {
         private readonly BoVoyageContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public DossierresasController(BoVoyageContext context)
+
+        public DossierresasController(BoVoyageContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: Client/Dossierresas
         public async Task<IActionResult> Index()
         {
+            var userEmail = _userManager.GetUserName(HttpContext.User);
+            var user = _context.Personne.Where(p => p.Email == userEmail).AsNoTracking().SingleOrDefault();
 
-            var boVoyageContext = _context.Dossierresa.Include(d => d.IdClientNavigation)
+            var userReservations = _context.Dossierresa.Include(d => d.IdClientNavigation)
                                                       .Include(d => d.IdEtatDossierNavigation)
                                                       .Include(d => d.IdVoyageNavigation)
                                                       .Include(d => d.IdVoyageNavigation.Voyageur)
-                                                      .Include(d => d.IdVoyageNavigation.IdDestinationNavigation);
-            return View(await boVoyageContext.ToListAsync());
+                                                      .Include(d => d.IdVoyageNavigation.IdDestinationNavigation)
+                                                      .Where(d => d.IdClient == user.Id);  
+            return View(await userReservations.ToListAsync());
         }
 
         // GET: Client/Dossierresas/Details/5

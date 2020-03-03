@@ -14,34 +14,24 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
     public class HomeController : Controller
     {
         private readonly BoVoyageContext _context;
-            public HomeController (BoVoyageContext context)
-            {
-                _context = context;
-            }
-        public IActionResult Index(int nbJours=15)
+        public HomeController(BoVoyageContext context)
         {
-            
-
+            _context = context;
+        }
+        public IActionResult Index(int nbJours = 15)
+        {
             ViewBag.NbJours = nbJours;
-            
-
             var DateLimite = DateTime.Now.AddDays(nbJours);
+            List<Voyage> voyages = _context.Voyage.Include(d => d.IdDestinationNavigation)
+                                                  .ThenInclude(p => p.Photo)
+                                                  .Where(i => i.DateDepart <= DateLimite)
+                                                  .AsNoTracking().ToList();
 
-
-
-            List<Voyage>voyages = _context.Voyage.Include(d=>d.IdDestinationNavigation).ThenInclude(p=>p.Photo)
-                                                                    .Where(i=>i.DateDepart<= DateLimite)
-                                                                    .AsNoTracking().ToList();
-
-
-
-           List<Dossierresa> reservations = _context.Dossierresa.Include(d=>d.IdEtatDossierNavigation)
-              .Where(d=>d.IdEtatDossierNavigation.Id==1).AsNoTracking().ToList();
-              
+            List<Dossierresa> reservations = _context.Dossierresa.Include(d => d.IdEtatDossierNavigation)
+                                                                 .Where(d => d.IdEtatDossierNavigation.Id == 1)
+                                                                 .AsNoTracking().ToList();
 
             VoyagesDossiersResa vdr = new VoyagesDossiersResa(voyages, reservations);
-
-
 
             return View(vdr);
         }
