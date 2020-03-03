@@ -11,30 +11,22 @@
 
 
 
-<div class="container-fluid ">
+<div class="container-fluid">
     <div class="row d-flex justify-content-center ">
         <div class="col-10">
 
-            <div class="jumbotron jumbotron-fluid text-light" style=" background-image: url(@ViewBag.Bg)">
-                <h1 class="display-4 text-center" style="font-weight:bold">BoVoyage</h1>
-                <p class="lead text-center" style="font-weight:bold">Des voyages à prix cassé!</p>
-                </br>
-                </br>
-                </br>
-                </br>
-                </br>
-                </br>
-                </br>
-                </br>
-                </br>
-                </br>
-                </br>
-                </br>
-                <hr class="my-4">
-                <p>Visionnez la rubrique "A propos" ou cliquez sur le bouton ci-dessous pour obtenir plus d'informations.</p>
-                <p class="lead">
-                    <a class="btn btn-primary btn-lg" href="#" role="button">En savoir plus</a>
-                </p>
+            <div class="jumbotron jumbotron-fluid text-light d-flex flex-column justify-content-between" style="height:800px; background-image: url(@ViewBag.Bg)">
+                <div>
+
+                    <h1 class="display-4 text-center" style="font-weight:bold">BoVoyage</h1>
+                    <p class="lead text-center" style="font-weight:bold">Des voyages à prix cassé!</p>
+                </div>
+
+
+                <div class="flex-column-reverse ml-3">
+                    <p>Visionnez la rubrique "A propos" ou cliquez sur le bouton ci-dessous pour obtenir plus d'informations.</p>
+                    <a class="btn btn-primary btn-lg" asp-area="Client" asp-controller="Home" asp-action="APropos" role="button">En savoir plus</a>
+                </div>
             </div>
         </div>
     </div>

@@ -2,4 +2,5 @@
 <ListeClients>
 	<Client Nom="Smith" Prénom="John" E-mail="test@test.com" />
 	<Client Nom="Swim" Prénom="Dory" E-mail="dory.swim@gmail.com" />
+	<Client Nom="lulu" Prénom="lili" E-mail="lili@lili.com" />
 </ListeClients>
