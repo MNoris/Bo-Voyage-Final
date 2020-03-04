@@ -114,8 +114,11 @@ namespace Bo_Voyage_Final.Areas.Client.Controllers
             }
 
             //filtres par prix
-            if (minPrice != 0 || maxPrice != 0)
-                reqVoyages = reqVoyages.Where(p => p.PrixHt <= maxPrice && p.PrixHt >= minPrice);
+            if (minPrice != 0 )
+                reqVoyages = reqVoyages.Where(p => p.PrixHt >= minPrice);
+
+            if ( maxPrice != 0)
+                reqVoyages = reqVoyages.Where(p => p.PrixHt <= maxPrice);
 
             //filtres par date de départ
             if (dateMin != DateTime.Today || dateMax != DateTime.Today.AddDays(7))

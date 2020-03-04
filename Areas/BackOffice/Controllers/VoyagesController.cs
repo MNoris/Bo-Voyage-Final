@@ -125,8 +125,11 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
 
 
             //filtres par prix
-            if (minPrice != 0 || maxPrice != 0)
-                reqVoyages = reqVoyages.Where(p => p.PrixHt <= maxPrice && p.PrixHt >= minPrice);
+            if (minPrice != 0)
+                reqVoyages = reqVoyages.Where(p => p.PrixHt >= minPrice);
+
+            if (maxPrice != 0)
+                reqVoyages = reqVoyages.Where(p => p.PrixHt <= maxPrice);
 
             //filtres par date de départ
             if (dateMin != DateTime.Today || dateMax != DateTime.Today.AddDays(7))
@@ -144,7 +147,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         public IActionResult EditerVoyages(string id)
         {
             ViewBag.Action = id;
-            var voyages = _context.Voyage.Include(v => v.IdDestinationNavigation).ToList();
+            var voyages = _context.Voyage.Include(v => v.IdDestinationNavigation).OrderBy(v => v.DateDepart).ToList();
             return View(voyages);
         }
 
@@ -170,7 +173,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         // GET: Identity/Voyages/Create
         public IActionResult Create()
         {
-            ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom");
+            ViewData["IdDestination"] = new SelectList(_context.Destination.OrderBy(d => d.Nom), "Id", "Nom");
             return View();
         }
 
@@ -187,7 +190,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(EditerVoyages));
             }
-            ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom", voyage.IdDestination);
+            ViewData["IdDestination"] = new SelectList(_context.Destination.OrderBy(d => d.Nom), "Id", "Nom", voyage.IdDestination);
             return View(voyage);
         }
 

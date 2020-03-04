@@ -57,7 +57,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
         // GET: BackOffice/Photos/Create
         public IActionResult Create(int id)
         {
-            ViewData["IdDestination"] = new SelectList(_context.Destination, "Id", "Nom", id);
+            ViewData["IdDestination"] = new SelectList(_context.Destination.OrderBy(d => d.Nom), "Id", "Nom", id);
             return View();
         }
 
@@ -94,11 +94,7 @@ namespace Bo_Voyage_Final.Areas.BackOffice.Controllers
                     _context.Add(imgTemp);
                     await _context.SaveChangesAsync();
                 }
-                if (ModelState.IsValid)
-                {
-                    return View("PhotoLoaded");
-
-                }
+                return View("PhotoLoaded");
             }
             return View();
         }
